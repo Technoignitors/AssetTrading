@@ -16,5 +16,8 @@ export default {
   },
   deletePost (id) {
     return Api().delete('posts/' + id)
+  },
+  login (data) {
+    return Api().post('users/login', data)
   }
 }

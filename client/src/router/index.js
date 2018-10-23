@@ -1,9 +1,10 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Hello from '@/components/HelloWorld'
-import Posts from '@/components/Posts'
-import NewPost from '@/components/NewPost'
-import EditPost from '@/components/EditPost'
+import Vue from 'vue';
+import Router from 'vue-router';
+import Posts from '../containers/Posts.vue';
+import NewPost from '../containers/NewPost.vue';
+import EditPost from '../containers/EditPost.vue';
+import Login from '../containers/Login.vue';
+import Profile from '../containers/Profile.vue';
 
 Vue.use(Router)
 
@@ -11,13 +12,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      name: 'Login',
+      component: Login
     },
     {
-      path: '/posts',
-      name: 'Posts',
-      component: Posts
+      path: '/profile',
+      name: 'Profile',
+      component: Profile
     },
     {
       path: '/posts/new',
@@ -28,6 +29,23 @@ export default new Router({
       path: '/posts/:id',
       name: 'EditPost',
       component: EditPost
+    },
+    {
+      path: '/user',
+      name: 'User',
+      children: [
+        {
+          path: ':username',
+          name: 'Profile',
+          component: Profile
+        }
+      ]
+    },
+    {
+      path: '*',
+      redirect: { name: 'Login' }
     }
-  ]
+  ],
+  mode: 'hash',
+
 })
