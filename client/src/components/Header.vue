@@ -66,8 +66,8 @@
                               </ul>
                         </li>
                         <li>
-                            <a>
-                                 <router-link to="/" tag="p"  exact><a>Log Out</a></router-link>
+                            <a id="logout">
+                                <p @click="logout()">Log Out</p>
                             </a>
                         </li>
 						<li class="separator hidden-lg"></li>
@@ -78,12 +78,19 @@
 </template>
 
 <script>
- import JQuery from 'jquery'
+import JQuery from 'jquery'
+import PostsService from '@/services/PostsService'
 var $ = JQuery
 export default {
    methods:{
-        logout(){
-            this.$router.push('/login')
+       async logout(){
+            let response =  await PostsService.logout();
+            console.log(response)
+            if(response.data && response.data.errors){
+                alert(response.data.errors.error)
+            }else{
+                this.$router.push('/login')
+            }
         }
     }
 }
@@ -220,5 +227,11 @@ function debounce(func, wait, immediate) {
 	};
 };
 </script>
+
+<style scoped>
+#logout {
+    cursor: pointer !important;
+}
+</style>
 
 

@@ -9,7 +9,7 @@
                 </div>
                     <form id="Login">
                         <div class="form-group">
-                            <input type="email" v-model="username" class="form-control" id="inputEmail" placeholder="Email Address">
+                            <input type="email" v-model="email" class="form-control" id="inputEmail" placeholder="Email Address">
                         </div>
                         <div class="form-group">
                             <input type="password" v-model="password" class="form-control" id="inputPassword" placeholder="Password">
@@ -17,7 +17,7 @@
                         <div class="forgot">
                         <a>Forgot password?</a>
                     </div>
-                    <button @click.prevent="submit()" type="submit" class="btn btn-primary">Login</button>
+                    <button :disabled="isFormEnable" @click.prevent="submit()" type="submit" class="btn btn-primary">Login</button>
                     </form>
                     </div>
                 </div>
@@ -28,17 +28,29 @@
 <script>
 import PostsService from '@/services/PostsService'
 export default {
+  data: function(){
+    return {
+      email:"",
+      password:""
+
+    }
+  },
+  computed: {
+    isFormEnable() {
+      if (this.email ===  "" || this.password ===  "" ) return true;
+      return false;
+    }
+  },
   methods: {
     async submit() {
         let response =  await PostsService.login({
            "user": {
-              email: this.username,
+              email: this.email,
               password: this.password
           }
         });
-       console.log(response)
         if(!response.data.errors){
-            this.$router.push({ name: "Posts" });
+            this.$router.push({ name: "Profile" });
         }else{
           alert(response.data.errors.error)
         }

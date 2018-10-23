@@ -2,61 +2,75 @@
     <div class="sidebar" data-color="purple" data-image="assets/img/sidebar-5.jpg">
     	<div class="sidebar-wrapper">
             <div class="logo">
-                <a href="http://www.creative-tim.com" class="simple-text">
-                    Creative Tim
+                <a class="simple-text">
+                    Techno Ignitors
                 </a>
             </div>
 
             <ul class="nav">
                 <li class="active">
-                    <a href="dashboard.html">
+                    <a>
                         <i class="pe-7s-graph"></i>
-                        <p>Dashboard</p>
+                        <router-link to="/" tag="p"  exact>Dashboard</router-link>
                     </a>
                 </li>
                 <li>
-                    <a href="user.html">
+                    <a>
                         <i class="pe-7s-user"></i>
-                        <p>User Profile</p>
+                        <router-link to="/" tag="p"  exact>User Profile</router-link>
                     </a>
                 </li>
                 <li>
-                    <a href="table.html">
+                    <a>
                         <i class="pe-7s-note2"></i>
-                        <p>Table List</p>
+                        <router-link to="/" tag="p"  exact>Table List</router-link>
                     </a>
                 </li>
                 <li>
-                    <a href="typography.html">
+                    <a>
                         <i class="pe-7s-news-paper"></i>
-                        <p>Typography</p>
+                        <router-link to="/" tag="p"  exact>Typography</router-link>
                     </a>
                 </li>
                 <li>
-                    <a href="icons.html">
+                    <a>
                         <i class="pe-7s-science"></i>
-                        <p>Icons</p>
+                        <router-link to="/" tag="p"  exact>Icons</router-link>
                     </a>
                 </li>
                 <li>
-                    <a href="maps.html">
+                    <a>
                         <i class="pe-7s-map-marker"></i>
-                        <p>Maps</p>
+                        <router-link to="/" tag="p"  exact>Maps</router-link>
                     </a>
                 </li>
                 <li>
-                    <a href="notifications.html">
+                    <a>
                         <i class="pe-7s-bell"></i>
-                        <p>Notifications</p>
+                        <router-link to="/" tag="p"  exact>Notifications</router-link>
                     </a>
                 </li>
 				<li class="active-pro">
-                    <a href="upgrade.html">
+                    <a>
                         <i class="pe-7s-rocket"></i>
-                        <p>Upgrade to PRO</p>
+                        <router-link to="/" tag="p"  exact>Upgrade to PRO</router-link>
                     </a>
                 </li>
             </ul>
     	</div>
     </div>
 </template>
+
+<script>
+export default {
+    
+}
+</script>
+
+<style scoped>
+.sidebar-wrapper a {
+    cursor: pointer;
+}
+</style>
+
+

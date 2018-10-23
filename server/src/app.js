@@ -3,8 +3,6 @@ const session = require('express-session');
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
-const posts = require('../routes/api/posts');
-const login = require('../routes/api/login');
 const errorHandler = require('errorhandler');
 const isProduction = process.env.NODE_ENV === 'production';
 const app = express();

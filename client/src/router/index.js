@@ -1,10 +1,10 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-import Posts from '../containers/Posts.vue';
-import NewPost from '../containers/NewPost.vue';
-import EditPost from '../containers/EditPost.vue';
-import Login from '../containers/Login.vue';
-import Profile from '../containers/Profile.vue';
+import Vue from 'vue'
+import Router from 'vue-router'
+import Posts from '../containers/Posts.vue'
+import NewPost from '../containers/NewPost.vue'
+import EditPost from '../containers/EditPost.vue'
+import Login from '../containers/Login.vue'
+import Profile from '../containers/Profile.vue'
 
 Vue.use(Router)
 
@@ -46,6 +46,6 @@ export default new Router({
       redirect: { name: 'Login' }
     }
   ],
-  mode: 'hash',
+  mode: 'hash'
 
 })
