@@ -4,56 +4,83 @@
             <div class="login-form">
                 <div class="main-div">
                     <div class="panel">
-                <h2>Admin Login</h2>
-                <p>Please enter your email and password</p>
-                </div>
-                    <form id="Login">
-                        <div class="form-group">
-                            <input type="email" v-model="email" class="form-control" id="inputEmail" placeholder="Email Address">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" v-model="password" class="form-control" id="inputPassword" placeholder="Password">
-                        </div>
-                        <div class="forgot">
-                        <a>Forgot password?</a>
+                    <h2>Login</h2>
+                    <p>Please enter your Email and Password</p>
+                    <v-alert v-if="displayError"
+                          :value="true"
+                          type="error"
+                        >
+                          {{displayError}}
+                        </v-alert>
                     </div>
-                    <button :disabled="isFormEnable" @click.prevent="submit()" type="submit" class="btn btn-primary">Login</button>
-                    </form>
+                     <v-form>
+                      <v-text-field
+                        v-model="email"
+                        :rules="emailRules"
+                        label="Email"
+                        required
+                      ></v-text-field>
+                      <v-text-field
+                        v-model="password"
+                        :rules="nameRules"
+                        type="password"
+                        label="Password"
+                        required
+                      ></v-text-field>
+                    </v-form>
+                    <v-btn :disabled="isFormEnable" @click.prevent="submit()"  color="success">submit</v-btn>
                     </div>
+                       
                 </div>
         </div>
     </div>
 </template>
 
 <script>
-import PostsService from '@/services/PostsService'
+import PostsService from "@/services/PostsService";
 export default {
-  data: function(){
+  data: function() {
     return {
-      email:"",
-      password:""
-
-    }
+      email: "",
+      password: "",
+      error: "",
+      valid: false,
+      name: "",
+      nameRules: [
+        v => !!v || "Password is required",
+        v => v.length <= 10 || "Name must be less than 10 characters"
+      ],
+      email: "",
+      emailRules: [
+        v => !!v || "E-mail is required",
+        v => /.+@.+/.test(v) || "E-mail must be valid"
+      ]
+    };
   },
   computed: {
     isFormEnable() {
-      if (this.email ===  "" || this.password ===  "" ) return true;
+      if (this.email === "" || this.password === "") return true;
       return false;
+    },
+    displayError() {
+      if (this.error) {
+        return thi.error;
+      }
     }
   },
   methods: {
     async submit() {
-        let response =  await PostsService.login({
-           "user": {
-              email: this.email,
-              password: this.password
-          }
-        });
-        if(!response.data.errors){
-            this.$router.push({ name: "Profile" });
-        }else{
-          alert(response.data.errors.error)
+      let response = await PostsService.login({
+        user: {
+          email: this.email,
+          password: this.password
         }
+      });
+      if (!response.data.errors) {
+        this.$router.push({ name: "Profile" });
+      } else {
+        this.error = response.data.errors.error;
+      }
     }
   }
 };
@@ -135,6 +162,9 @@ export default {
   color: #444444;
   font-size: 13px;
   text-decoration: none;
+}
+.error {
+  background-color: red !important;
 }
 </style>
 

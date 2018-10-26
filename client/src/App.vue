@@ -1,16 +1,18 @@
 <template>
   <div id="app">
+    <v-app>
     <div class="wrapper" v-if="showHeaderFooterLeftPanel">
       <app-left-panel ></app-left-panel>
        <div class="main-panel">
           <app-header></app-header>
           <router-view />
-          <app-footer></app-footer>
+          <!-- <app-footer></app-footer> -->
        </div>
     </div>
     <div v-if="!showHeaderFooterLeftPanel">
       <router-view />
     </div>
+    </v-app>
   </div>
 </template>
 
@@ -43,6 +45,7 @@ export default {
 @import '../static/css/light-bootstrap-dashboard.css';
 @import '../static/css/pe-icon-7-stroke.css';
 @import '../node_modules/font-awesome/css/font-awesome.css';
-@import '../node_modules/bootstrap-vue/dist/bootstrap-vue.css'
+@import '../node_modules/bootstrap-vue/dist/bootstrap-vue.css';
+@import 'vuetify/dist/vuetify.min.css';
 
 </style>

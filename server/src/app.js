@@ -16,12 +16,11 @@ app.use(morgan('combined'))
 app.use(bodyParser.json())
 app.use(cors(corsOptions))
 app.use(session({ secret: 'passport-tutorial', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
-if(!isProduction) {
-  app.use(errorHandler());
-}
+app.use(errorHandler());
+app.use('/uploads',express.static('uploads'))
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://ignitors:lhussain12@ds137003.mlab.com:37003/hackathon');
+mongoose.connect('mongodb://ignitors:lhussain12@ds137003.mlab.com:37003/hackathon', { useNewUrlParser: true });
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error"));
 db.once("open", function(callback){
@@ -36,28 +35,7 @@ require('../config/passport');
 app.use(require('../routes'));
 
 //Error handlers & middlewares
-if(!isProduction) {
-  app.use((err, req, res) => {
-    res.status(err.status || 500);
-    res.json({
-      errors: {
-        message: err.message,
-        error: err,
-      },
-    });
-  });
-}
 
-app.use((err, req, res) => {
-  res.status(err.status || 500);
-
-  res.json({
-    errors: {
-      message: err.message,
-      error: {},
-    },
-  });
-});
 
 
 app.listen(process.env.PORT || 8081)

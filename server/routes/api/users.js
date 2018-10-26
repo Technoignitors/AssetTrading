@@ -3,6 +3,9 @@ const passport = require("passport");
 const router = require("express").Router();
 const auth = require("../auth");
 const Users = mongoose.model("Users");
+const UserProfile = require("../../models/user-profiles");
+const isValidUser = require("../../config/validations/userValidation");
+const upload = require("../../config/image-upload");
 
 //POST new user route (optional, everyone has access)
 router.post("/", auth.optional, (req, res, next) => {
@@ -108,5 +111,70 @@ router.get("/logout", function(req, res) {
     });
   }
 });
+
+router.post(
+  "/userProfile",
+  auth.required,
+  isValidUser,
+  async (req, res, next) => {
+    try {
+      let UserId = req.body.UserId;
+      let _up = await UserProfile.findOne({ UserId: UserId }).exec();
+      if (!_up) {
+        console.log(req.body)
+        let userProfile = new UserProfile(req.body);
+        return await userProfile.save().then(result => res.json({ result }));
+      } else {
+        const ID = _up._id;
+        req.body.UpdatedOn = new Date();
+        await UserProfile.findOneAndUpdate(
+          ID,
+          { $set: req.body },
+          { new: true }
+        ).exec(async (err, result) => {
+          await console.log("RESULT: " + result);
+          return await res.json({ result });
+        });
+      }
+    } catch (error) {
+      
+      return res.status(422).json({
+        errors: {
+          error: error
+        }
+      });
+    }
+  }
+);
+
+router.post(
+  "/userProfileImageUpload",
+  auth.required,  
+  upload.single('ProfileImage'),
+  async (req, res, next) => {
+    try {
+      let UserId = req.body.UserId;
+      let _up = await UserProfile.findOne({ UserId: UserId }).exec();
+      if (!_up) {
+        return res.status(422).json({
+          error: "User Profile Not Found"
+        });
+      } else {
+        _up.ProfileImage = req.file.path;
+        await _up.save();
+        return await res.status(200).json({
+          message: "Profile Updated"
+        });
+      }
+    } catch (error) {
+      console.log("dssd" + error)
+      return res.status(422).json({
+        errors: {
+          error: error
+        }
+      });
+    }
+  }
+);
 
 module.exports = router;
