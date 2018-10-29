@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const AssetSchema = new Schema({  
   SKU: {
     type: String,
-    unique:"dsdsd"
+    unique:true
   },
   UploadedBy: {
     type: Schema.ObjectId,
@@ -24,6 +24,14 @@ const AssetSchema = new Schema({
   UpdatedOn: {
     type: Date,
     default: new Date()
+  },
+  CreatedBy: {
+    type: Schema.ObjectId,
+    ref: "Users"
+  },
+  UpdatedBy: {
+    type: Schema.ObjectId,
+    ref: "Users"
   },
   Reviews: [
     {
@@ -67,12 +75,18 @@ const AssetSchema = new Schema({
 
   Documents: [
     {
-      type: String
+      filename:"String",
+      mimetype:"String",
+      path:"String",
+      size:Number
     }
   ],
   Images: [
     {
-      type: String
+      filename:"String",
+      mimetype:"String",
+      path:"String",
+      size:Number
     }
   ]
 });

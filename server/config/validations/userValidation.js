@@ -1,20 +1,20 @@
 const mongoose = require("mongoose");
 const Users = mongoose.model("Users");
 const isValidUser = async function(req, res, next) {
-    if(!mongoose.Types.ObjectId.isValid(req.body.UserId)){
-        console.log(mongoose.Types.ObjectId.isValid(req.body.UserId));
+    console.log(req.payload.id)
+    if(!mongoose.Types.ObjectId.isValid(req.payload.id)){
         return res.status(422).json({
             error: "User ID is not valid"
           });
     };
 
-    let UserId = req.body.UserId;
+    let UserId = req.payload.id;
     if (!UserId) {
       return res.status(422).json({
         error: "User ID is required"
       });
     } else {
-      let user = await Users.findOne({ _id: req.body.UserId }).exec();
+      let user = await Users.findOne({ _id: mongoose.Types.ObjectId(UserId)}).exec();
       if (!user) {
         return res.status(422).json({
           error: "User ID not Found"

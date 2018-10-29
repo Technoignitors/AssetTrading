@@ -38,11 +38,21 @@ const UsersSchema = new Schema({
   GST: String,
   Mtoken: Number,
   ProfileImage: String,
-  CreatedOn:{
-      type:Date, default:new Date()
+  CreatedOn: {
+    type: Date,
+    default: new Date()
   },
-  UpdatedOn:{
-    type:Date, default:new Date()
+  UpdatedOn: {
+    type: Date,
+    default: new Date()
+  },
+  CreatedBy: {
+    type: Schema.ObjectId,
+    ref: "Users"
+  },
+  UpdatedBy: {
+    type: Schema.ObjectId,
+    ref: "Users"
   }
 });
 

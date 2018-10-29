@@ -118,10 +118,10 @@ router.post(
   isValidUser,
   async (req, res, next) => {
     try {
-      let UserId = req.body.UserId;
+      let UserId = req.payload.id;
       let _up = await UserProfile.findOne({ UserId: UserId }).exec();
       if (!_up) {
-        console.log(req.body)
+        req.body.UserId = UserId;
         let userProfile = new UserProfile(req.body);
         return await userProfile.save().then(result => res.json({ result }));
       } else {
@@ -149,11 +149,12 @@ router.post(
 
 router.post(
   "/userProfileImageUpload",
-  auth.required,  
+  auth.required,
+  isValidUser, 
   upload.single('ProfileImage'),
   async (req, res, next) => {
     try {
-      let UserId = req.body.UserId;
+      let UserId = req.payload.id;
       let _up = await UserProfile.findOne({ UserId: UserId }).exec();
       if (!_up) {
         return res.status(422).json({
