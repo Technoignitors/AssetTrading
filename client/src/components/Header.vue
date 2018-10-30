@@ -8,18 +8,18 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Dashboard</a>
+                    <a class="navbar-brand" >Dashboard</a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-left">
                         <li>
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <a  class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-dashboard"></i>
 								<p class="hidden-lg hidden-md">Dashboard</p>
                             </a>
                         </li>
                         <li class="dropdown">
-                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                              <a  class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="fa fa-globe"></i>
                                     <b class="caret hidden-lg hidden-md"></b>
 									<p class="hidden-lg hidden-md">
@@ -28,15 +28,15 @@
 									</p>
                               </a>
                               <ul class="dropdown-menu">
-                                <li><a href="#">Notification 1</a></li>
-                                <li><a href="#">Notification 2</a></li>
-                                <li><a href="#">Notification 3</a></li>
-                                <li><a href="#">Notification 4</a></li>
-                                <li><a href="#">Another notification</a></li>
+                                <li><a >Notification 1</a></li>
+                                <li><a >Notification 2</a></li>
+                                <li><a >Notification 3</a></li>
+                                <li><a >Notification 4</a></li>
+                                <li><a >Another notification</a></li>
                               </ul>
                         </li>
                         <li>
-                           <a href="">
+                           <a>
                                 <i class="fa fa-search"></i>
 								<p class="hidden-lg hidden-md">Search</p>
                             </a>
@@ -44,25 +44,25 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                           <a href="">
+                           <a>
                                <p>Account</p>
                             </a>
                         </li>
                         <li class="dropdown">
-                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                              <a  class="dropdown-toggle" data-toggle="dropdown">
                                     <p>
 										Dropdown
 										<b class="caret"></b>
 									</p>
                               </a>
                               <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something</a></li>
+                                <li><a >Action</a></li>
+                                <li><a >Another action</a></li>
+                                <li><a >Something</a></li>
+                                <li><a >Another action</a></li>
+                                <li><a >Something</a></li>
                                 <li class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
+                                <li><a >Separated link</a></li>
                               </ul>
                         </li>
                         <li>

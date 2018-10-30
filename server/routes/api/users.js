@@ -4,6 +4,7 @@ const router = require("express").Router();
 const auth = require("../auth");
 const Users = mongoose.model("Users");
 const UserProfile = require("../../models/user-profiles");
+const Category = require("../../models/category");
 const isValidUser = require("../../config/validations/userValidation");
 const upload = require("../../config/image-upload");
 
@@ -111,6 +112,51 @@ router.get("/logout", function(req, res) {
     });
   }
 });
+
+router.get(
+  "/getUserProfile",
+  auth.required,
+  isValidUser,
+  async (req, res, next) => {
+    try {
+      let UserId = req.payload.id;
+      let _up = await UserProfile.findOne({ UserId: UserId }).exec();
+      
+      if (!_up) {
+        throw 'User Profile is not set';
+      } else {
+        return await res.json({ "userProfile": _up });
+      }
+    } catch (error) {
+      
+      return res.status(200).json({
+        errors: {
+          error: error
+        }
+      });
+    }
+  }
+);
+
+router.get(
+  "/getCategories",
+  async (req, res, next) => {
+    try {
+      Category.find({}, function(err, categories) {
+        res.json({ "Categories": categories });
+        res.send(categories, {});
+      });
+      // let _categories = await Category.find({}).exec();
+      // return await res.json({ "Categories": _categories });
+    } catch (error) {
+      return res.status(200).json({
+        errors: {
+          error: error
+        }
+      });
+    }
+  }
+);
 
 router.post(
   "/userProfile",

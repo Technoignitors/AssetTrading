@@ -64,7 +64,7 @@ export default {
     },
     displayError() {
       if (this.error) {
-        return thi.error;
+        return this.error;
       }
     }
   },
@@ -77,7 +77,8 @@ export default {
         }
       });
       if (!response.data.errors) {
-        this.$router.push({ name: "Profile" });
+        localStorage.setItem('token', response.data.user.token)
+        this.$router.push({ name: "Dashboard" });
       } else {
         this.error = response.data.errors.error;
       }

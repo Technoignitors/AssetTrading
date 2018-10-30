@@ -14,7 +14,7 @@ const AssetOwnershipSchema = new Schema({
     type: Schema.ObjectId,
     ref: "Asset"
   },
-  AvailDiscount: { type: Number, enum: [1, 2], default: 1 },
+  AvailDiscount: Boolean,
   DiscountPercentage: Number,
   DiscounedAmount: Number,
   DeliveryAddressType: {
@@ -22,7 +22,6 @@ const AssetOwnershipSchema = new Schema({
     enum: ["Permanent", "Corrospondence"],
     default: "Permanent"
   },
-  GST: Number,
   AssetPrice: Number,
   FinalPurchasePrice: Number,
   OwnershipStatus: { type: Number, enum: [1, 2], default: 1 },

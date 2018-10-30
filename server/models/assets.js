@@ -14,6 +14,10 @@ const AssetSchema = new Schema({
     type: Schema.ObjectId,
     ref: "Users"
   },
+  Category: {
+    type: Schema.ObjectId,
+    ref: "Category"
+  },
   Name: String,
   Description: String,
   Specification: String,

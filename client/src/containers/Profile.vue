@@ -1,133 +1,369 @@
 <template>
-    <div class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="card">
-                            <div class="header">
-                                <h4 class="title">Edit Profile</h4>
-                            </div>
-                            <div class="content">
-                                <form>
-                                    <div class="row">
-                                        <div class="col-md-5">
-                                            <div class="form-group">
-                                                <label>Company (disabled)</label>
-                                                <input type="text" class="form-control" disabled placeholder="Company" value="Creative Code Inc.">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label>Username</label>
-                                                <input type="text" class="form-control" placeholder="Username" value="michael23">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Email address</label>
-                                                <input type="email" class="form-control" placeholder="Email">
-                                            </div>
-                                        </div>
-                                    </div>
+  <div class="" style="padding:10px">
+   <v-form ref="form" v-model="valid" lazy-validation>
+    <v-expansion-panel
+      v-model="panel"
+      expand>
+      <v-expansion-panel-content
+        v-for="(item, i) in panels"
+        :key="i">
+        <div slot="header">{{item}}</div>
+        <v-card v-if="item=='Basic'">
+          <v-card-text class="grey lighten-3">
+              <div class="row">
+                    <v-text-field
+                    v-model="formData.FirstName"
+                    ref="firstName"
+                    :rules="nameRules"
+                    :error-messages="errorMessages"
+                    :counter="10"
+                    label="FirstName"
+                    class="col-md-6"
+                    required
+                    ></v-text-field>
 
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>First Name</label>
-                                                <input type="text" class="form-control" placeholder="Company" value="Mike">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Last Name</label>
-                                                <input type="text" class="form-control" placeholder="Last Name" value="Andrew">
-                                            </div>
-                                        </div>
-                                    </div>
+                    <v-text-field
+                    v-model="formData.MaidenName"
+                    ref="maidenName"
+                    label="MaidenName"
+                    class="col-md-6"
+                    ></v-text-field>
 
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Address</label>
-                                                <input type="text" class="form-control" placeholder="Home Address" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09">
-                                            </div>
-                                        </div>
-                                    </div>
+                    <v-text-field
+                    v-model="formData.LastName"
+                    ref="lastName"
+                    :rules="nameRules"
+                    label="LastName"
+                    class="col-md-6"
+                    required
+                    ></v-text-field>
 
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>City</label>
-                                                <input type="text" class="form-control" placeholder="City" value="Mike">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>Country</label>
-                                                <input type="text" class="form-control" placeholder="Country" value="Andrew">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>Postal Code</label>
-                                                <input type="number" class="form-control" placeholder="ZIP Code">
-                                            </div>
-                                        </div>
-                                    </div>
+                    <v-text-field
+                    v-model="formData.FatherName"
+                    ref="fatherName"
+                    :rules="nameRules"
+                    label="FatherName"
+                    class="col-md-6"
+                    required
+                    ></v-text-field>
 
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>About Me</label>
-                                                <textarea rows="5" class="form-control" placeholder="Here can be your description" value="Mike">Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.</textarea>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <v-text-field
+                    v-model="formData.DOB"
+                    ref="dob"
+                    :rules="nameRules"
+                    label="DOB"
+                    class="col-md-6"
+                    required
+                    ></v-text-field>
 
-                                    <button type="submit" class="btn btn-info btn-fill pull-right">Update Profile</button>
-                                    <div class="clearfix"></div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card card-user">
-                            <div class="image">
-                                <img src="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400" alt="..."/>
-                            </div>
-                            <div class="content">
-                                <div class="author">
-                                     <a href="#">
-                                    <img class="avatar border-gray" src="assets/img/faces/face-3.jpg" alt="..."/>
+                    <v-text-field
+                    v-model="formData.Mobile"
+                    ref="mobile"
+                    :rules="numericRules"
+                    label="Mobile"
+                    type="email"
+                    class="col-md-6"
+                    required
+                    ></v-text-field>
+                    
+                    <v-text-field
+                    v-model="formData.LandLine"
+                    ref="landline"
+                    :rules="numericRules"
+                    label="LandLine"
+                    class="col-md-6"
+                    required
+                    ></v-text-field>
 
-                                      <h4 class="title">Mike Andrew<br />
-                                         <small>michael24</small>
-                                      </h4>
-                                    </a>
-                                </div>
-                                <p class="description text-center"> "Lamborghini Mercy <br>
-                                                    Your chick she so thirsty <br>
-                                                    I'm in that two seat Lambo"
-                                </p>
-                            </div>
-                            <hr>
-                            <div class="text-center">
-                                <button href="#" class="btn btn-simple"><i class="fa fa-facebook-square"></i></button>
-                                <button href="#" class="btn btn-simple"><i class="fa fa-twitter"></i></button>
-                                <button href="#" class="btn btn-simple"><i class="fa fa-google-plus-square"></i></button>
+                    <v-text-field
+                    v-model="formData.Email"
+                    ref="email"
+                     :rules="emailRules"
+                    label="Email"
+                    class="col-md-6"
+                    required
+                    ></v-text-field>
 
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
+                    <v-text-field
+                    v-model="formData.SecondaryEmail"
+                    ref="secondaryEmail"
+                    :rules="emailRules"
+                    label="SecondaryEmail"
+                    class="col-md-6"
+                    required
+                    ></v-text-field>
             </div>
-        </div>
-</template>
+          </v-card-text>
+        </v-card>
 
+        <v-card v-if="item=='Address'">
+          <v-card-text class="grey lighten-3">
+                <div class="row">
+                    <!-- <v-checkbox
+                    :label="`Indian`" class="col-md-12"
+                    v-model="formData.ResidentStatus"
+                    ></v-checkbox> -->
+
+                    <v-text-field
+                    v-model="formData.CorrospondenceAddressStreet1"
+                    :rules="nameRules"
+                    label="CorrospondenceAddressStreet1"
+                    class="col-md-6"
+                    required
+                    ></v-text-field>
+
+                    <v-text-field
+                    v-model="formData.CorrospondenceAddressStreet2"
+                    :rules="nameRules"
+                    label="CorrospondenceAddressStreet2"
+                    class="col-md-6"
+                    required
+                    ></v-text-field>
+
+                    <v-text-field
+                    v-model="formData.CorrospondenceAddressCity"
+                    :rules="nameRules"
+                    label="CorrospondenceAddressCity"
+                    class="col-md-6"
+                    required
+                    ></v-text-field>
+
+                    <v-text-field
+                    v-model="formData.CorrospondenceAddressState"
+                    :rules="nameRules"
+                    label="CorrospondenceAddressState"
+                    class="col-md-6"
+                    required
+                    ></v-text-field>
+
+                    <v-text-field
+                    v-model="formData.CorrospondenceAddressCountry"
+                    :rules="nameRules"
+                    label="CorrospondenceAddressCountry"
+                    class="col-md-6"
+                    required
+                    ></v-text-field>
+                    
+                    <v-text-field
+                    v-model="formData.CorrospondenceAddressZipCode"
+                    :rules="nameRules"
+                    label="CorrospondenceAddressZipCode"
+                    class="col-md-6"
+                    required
+                    ></v-text-field>
+
+                     <v-checkbox
+                    :label="`Same as Corrospondence Address`" class="col-md-12"
+                    v-model="formData.SameAsCorrospondence"
+                    ></v-checkbox>
+
+                    <div v-if="!formData.SameAsCorrospondence">
+                        <v-text-field
+                        v-model="formData.PermanentAddressStreet1"
+                        :rules="nameRules"
+                        label="PermanentAddressStreet1"
+                        class="col-md-6"
+                        required
+                        ></v-text-field>
+
+                        <v-text-field
+                        v-model="formData.PermanentAddressStreet2"
+                        :rules="nameRules"
+                        label="PermanentAddressStreet2"
+                        class="col-md-6"
+                        required
+                        ></v-text-field>
+
+                        <v-text-field
+                        v-model="formData.PermanentAddressCity"
+                        :rules="nameRules"
+                        label="PermanentAddressCity"
+                        class="col-md-6"
+                        required
+                        ></v-text-field>
+
+                        <v-text-field
+                        v-model="formData.PermanentAddressState"
+                        :rules="nameRules"
+                        label="PermanentAddressState"
+                        class="col-md-6"
+                        required
+                        ></v-text-field>
+
+                        <v-text-field
+                        v-model="formData.PermanentAddressCountry"
+                        :rules="nameRules"
+                        label="PermanentAddressCountry"
+                        class="col-md-6"
+                        required
+                        ></v-text-field>
+
+                        
+                        <v-text-field
+                        v-model="formData.PermanentAddressZipCode"
+                        :rules="nameRules"
+                        label="PermanentAddressZipCode"
+                        class="col-md-6"
+                        required
+                        ></v-text-field>
+                    </div>
+                </div>
+          </v-card-text>
+        </v-card>
+
+
+        <v-card v-if="item=='Occupation'">
+          <v-card-text class="grey lighten-3">
+                <div class="row">
+                    <v-checkbox
+                    :label="`If Employed`" class="col-md-12"
+                    v-model="formData.IfEmployed"
+                    ></v-checkbox>
+
+                    <v-text-field
+                    v-model="formData.PAN"
+                    :rules="numericRules"
+                    :counter="10"
+                    label="PAN"
+                    class="col-md-6"
+                    required
+                    ></v-text-field>
+
+                    <v-text-field
+                    v-model="formData.Occupation"
+                    :rules="nameRules"
+                    :counter="10"
+                    label="Occupation"
+                    class="col-md-6"
+                    required
+                    ></v-text-field>
+
+                    <v-text-field
+                    v-model="formData.GrossIncome"
+                    :rules="numericRules"
+                    label="GrossIncome"
+                    class="col-md-6"
+                    required
+                    ></v-text-field>
+
+                    <v-text-field
+                    v-model="formData.NetWorth"
+                    :rules="numericRules"
+                    label="NetWorth"
+                    class="col-md-6"
+                    required
+                    ></v-text-field>
+
+                    <v-checkbox
+                    :label="`GST Registered ?`" class="col-md-12"
+                    v-model="formData.GSTRegistered"
+                    ></v-checkbox>
+
+                    <v-text-field
+                    v-model="formData.GST"
+                    :rules="nameRules"
+                    label="GST"
+                    class="col-md-6"
+                    required
+                    ></v-text-field>
+                </div>
+          </v-card-text>
+        </v-card>
+      </v-expansion-panel-content>
+    </v-expansion-panel>
+   </v-form>
+    <v-btn
+      :disabled="!valid"
+      @click="submit"
+    >
+      submit
+    </v-btn>
+    <v-btn @click="clear">clear</v-btn>
+  </div>
+</template>
 <script>
+import PostsService from "@/services/PostsService";
 export default {
-    
-}
+  data: function() {
+    return {
+      panels: ["Basic", "Address", "Occupation"],
+      emailRules: [
+        v => !!v || "E-mail is required",
+        v => /.+@.+/.test(v) || "E-mail must be valid"
+      ],
+      nameRules: [v => !!v || "Field is required"],
+      numericRules:[
+        v => !!v || "Field is required",
+        v => /^[0-9]*$/.test(v) || "Field must be valid number"
+      ],
+      valid:false,
+      errorMessages:"",
+      formData: {
+        FirstName: "Test",
+        LastName: "test",
+        MaidenName: "test",
+        DOB: "12-12-1989",
+        FatherName: "test",
+        Mobile: "123457895",
+        LandLine: "123457895",
+        Email: "test@test.com",
+        SecondaryEmail: "test@test.com",
+        ResidentStatus: "Indian",
+        CorrospondenceAddressStreet1: "test",
+        CorrospondenceAddressStreet2: "test",
+        CorrospondenceAddressCity: "test",
+        CorrospondenceAddressState: "test",
+        CorrospondenceAddressCountry: "test",
+        CorrospondenceAddressZipCode: "test",
+        PermanentAddressStreet1: "test",
+        PermanentAddressStreet2: "test",
+        PermanentAddressCity: "test",
+        PermanentAddressState: "test",
+        PermanentAddressCountry: "test",
+        PermanentAddressZipCode: "test",
+        IfEmployed: true,
+        PAN: "test",
+        Occupation: "test",
+        GrossIncome: "123456",
+        NetWorth: "123456",
+        GSTRegistered: true,
+        GST: "test",
+        Mtoken: "50000",
+        SameAsCorrospondence: true,
+      }
+    };
+  },
+  computed: {
+    Form() {
+      return this.formData
+    }
+  },
+  methods: {
+    async submit() {
+      if (this.$refs.form.validate()) {
+        let response = await PostsService.setUserProfile(this.Form);
+        console.log(response);
+      }
+    },
+    clear() {
+      this.$refs.form.reset();
+    }
+  },
+  created: async function() {
+    let response = await PostsService.getUserProfile();
+    if (!response.data.errors) {
+        this.formData = response.data.userProfile;
+    } else {
+      console.log(response);
+      //alert(response.data.errors.error);
+    }
+  }
+};
 </script>
+
+<style scoped>
+.mar-10 {
+  padding: 10px !important;
+}
+</style>
 

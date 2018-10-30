@@ -1,16 +1,5 @@
 <template>
-<div style="padding:10px;">
-  <v-carousel
-    delimiter-icon="stop"
-    prev-icon="mdi-arrow-left"
-    next-icon="mdi-arrow-right"
-  >
-    <v-carousel-item
-      v-for="(item,i) in items"
-      :key="i"
-      :src="item.src"
-    ></v-carousel-item>
-  </v-carousel>
+<div>
     <div style="padding:10px;" class="col-sm-4" v-for="(item,i) in items" :key="i">
         <v-card>
             <v-img

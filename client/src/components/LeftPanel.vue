@@ -18,14 +18,19 @@
                         <p>Profile</p>
                     </a>
                 </router-link>
-                <router-link to="/orders" tag="li" exact active-class="active"><a>
-                        <i class="pe-7s-news-paper"></i>
-                        <p>Orders</p>
+                 <router-link to="/myassets" tag="li" exact active-class="active"><a>
+                        <i class="pe-7s-user"></i>
+                        <p>My Assets</p>
                     </a>
                 </router-link>
-                <router-link to="/buysell" tag="li" exact active-class="active"><a>
+                <router-link to="/orders" tag="li" exact active-class="active"><a>
                         <i class="pe-7s-news-paper"></i>
-                        <p>Buy/Sell</p>
+                        <p>My Orders</p>
+                    </a>
+                </router-link>
+                <router-link to="/sellasset" tag="li" exact active-class="active"><a>
+                        <i class="pe-7s-news-paper"></i>
+                        <p>Sell Asset</p>
                     </a>
                 </router-link>
                  <router-link to="/profile" tag="li" exact class="active-pro"><a>
