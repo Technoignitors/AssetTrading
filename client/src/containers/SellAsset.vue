@@ -51,8 +51,11 @@
 
                     <v-select
                       class="col-md-6"
-                      :items="items"
+                      :items="categories"
+                      item-text="Name"
                       label="Categories"
+                      v-model="formData.Category"
+                      item-value="_id"
                     ></v-select>
 
             </div>
@@ -140,19 +143,23 @@
       submit
     </v-btn>
     <v-btn @click="clear">clear</v-btn>
+    <app-Notifications :show="showNotification" :messege="notificationMessage" ></app-Notifications>
+   
   </div>
 </template>
 <script>
 import PostsService from "@/services/PostsService";
-import bFormFile from 'bootstrap-vue/es/components/form-file/form-file'
+import bFormFile from "bootstrap-vue/es/components/form-file/form-file";
+import Notifications from "@/components/Notifications";
 export default {
   components: {
-        'b-form-file': bFormFile
+    "b-form-file": bFormFile,
+    "app-Notifications": Notifications
   },
   data: function() {
     return {
       panels: ["Basic", "Offers And Discounts", "Documents"],
-      panel:[],
+      panel: [],
       emailRules: [
         v => !!v || "E-mail is required",
         v => /.+@.+/.test(v) || "E-mail must be valid"
@@ -162,10 +169,13 @@ export default {
         v => !!v || "Field is required",
         v => /^[0-9]*$/.test(v) || "Field must be valid number"
       ],
-      items:[],
+      items: [],
       valid: false,
       errorMessages: "",
-      file:null,
+      file: null,
+      categories: [],
+      showNotification: false,
+      notificationMessage: "",
       formData: {
         SKU: "Test",
         Category: "test",
@@ -176,7 +186,8 @@ export default {
         DiscountPercentage: 10,
         DiscounedAmount: 1234,
         AssetPrice: 1254,
-        FinalPurchasePrice: 1452
+        FinalPurchasePrice: 1452,
+        Category: "5bd94c5aabef9e4d544ffc11"
       }
     };
   },
@@ -187,9 +198,16 @@ export default {
   },
   methods: {
     async submit() {
+      this.showNotification = false;
       if (this.$refs.form.validate()) {
-        let response = await PostsService.setUserProfile(this.Form);
-        console.log(response);
+        let response = await PostsService.uploadAsset(this.Form);
+        if (response.data.error) {
+          this.showNotification = true;
+          this.notificationMessage = response.data.error;
+        }else{
+          this.showNotification = true;
+          this.notificationMessage = "Asset Listed Successfully";
+        }
       }
     },
     clear() {
@@ -197,12 +215,12 @@ export default {
     }
   },
   created: async function() {
-    let response = await PostsService.getUserProfile();
-    if (!response.data.errors) {
-      //this.formData = response.data.userProfile;
+    let categories = await PostsService.getCategories();
+    if (categories.data.errors) {
+      this.showNotification = true;
+      this.notificationMessage = categories.data.errors.error;
     } else {
-      console.log(response);
-      //alert(response.data.errors.error);
+      this.categories = categories.data.Categories;
     }
   }
 };

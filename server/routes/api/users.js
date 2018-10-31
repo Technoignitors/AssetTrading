@@ -138,16 +138,32 @@ router.get(
   }
 );
 
-router.get(
-  "/getCategories",
+router.post(
+  "/saveCategories",
+  auth.required,
   async (req, res, next) => {
     try {
-      Category.find({}, function(err, categories) {
-        res.json({ "Categories": categories });
-        res.send(categories, {});
+      let cat = new Category(req.body)
+      await cat.save()
+      let _cat = await Category.find().lean().exec();
+      return await res.json({ "Categories": _cat });
+    } catch (error) {
+      return res.status(200).json({
+        errors: {
+          error: error
+        }
       });
-      // let _categories = await Category.find({}).exec();
-      // return await res.json({ "Categories": _categories });
+    }
+  }
+);
+
+router.get(
+  "/getCategories",
+  auth.required,
+  async (req, res, next) => {
+    try {
+      let _cat = await Category.find().lean().exec();
+      return await res.json({ "Categories": _cat });
     } catch (error) {
       return res.status(200).json({
         errors: {
