@@ -1,6 +1,13 @@
 import Api from "@/services/Api";
+const header = {
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Token ${localStorage.getItem("token")}`
+  }
+}
 
 export default {
+
   fetchPosts() {
     return Api().get("posts");
   },
@@ -24,19 +31,15 @@ export default {
     return Api().get("users/logout");
   },
   getUserProfile() {
-    return Api().get("users/getUserProfile", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${localStorage.getItem("token")}`
-      }
-    });
+    return Api().get("users/getUserProfile", header);
   },
   setUserProfile(data) {
-    return Api().post("users/userProfile",data, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${localStorage.getItem("token")}`
-      }
-    });
-  }
+    return Api().post("users/userProfile",data, header);
+  },
+  getCategories() {
+    return Api().get("users/getCategories", header);
+  },
+  uploadAsset(data) {
+    return Api().post("assets/upload",data, header);
+  },
 };

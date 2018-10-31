@@ -28,6 +28,11 @@
                         <p>My Orders</p>
                     </a>
                 </router-link>
+                <router-link to="/approvals" tag="li" exact active-class="active"><a>
+                        <i class="pe-7s-news-paper"></i>
+                        <p>My Approvals</p>
+                    </a>
+                </router-link>
                 <router-link to="/sellasset" tag="li" exact active-class="active"><a>
                         <i class="pe-7s-news-paper"></i>
                         <p>Sell Asset</p>
