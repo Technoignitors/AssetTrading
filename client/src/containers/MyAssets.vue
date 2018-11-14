@@ -23,8 +23,8 @@
             </div>
             </v-card-title>
             <v-card-actions>
-            <v-btn flat color="orange">Buy</v-btn>
-            <v-btn flat color="orange">Explore</v-btn>
+            <!-- <v-btn flat color="orange">Buy</v-btn> -->
+            <v-btn flat color="orange" @click="resell(i)">Sell</v-btn>
             </v-card-actions>
         </v-card>
     </div>
@@ -50,6 +50,11 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    resell(id) {
+      this.$router.push({ name: "ReSellAsset", params: { id: id } });
+    }
   }
 };
 </script>

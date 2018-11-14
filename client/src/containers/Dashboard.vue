@@ -1,6 +1,6 @@
 <template>
 <div style="padding:10px;">
-  <v-carousel
+  <!-- <v-carousel
     delimiter-icon="stop"
     prev-icon="mdi-arrow-left"
     next-icon="mdi-arrow-right"
@@ -10,7 +10,7 @@
       :key="i"
       :src="item.src"
     ></v-carousel-item>
-  </v-carousel>
+  </v-carousel> -->
     <div style="padding:10px;" class="col-sm-4" v-for="(item,i) in items" :key="i">
         <v-card>
             <v-img
@@ -34,8 +34,8 @@
             </div>
             </v-card-title>
             <v-card-actions>
-            <v-btn flat color="orange">Buy</v-btn>
-            <v-btn flat color="orange">Explore</v-btn>
+            <!-- <v-btn flat color="orange">Buy</v-btn> -->
+            <v-btn flat color="orange" @click="exploreItem(i)">Explore</v-btn>
             </v-card-actions>
         </v-card>
     </div>
@@ -61,6 +61,11 @@ export default {
         }
       ]
     };
+  },
+  methods:{
+    exploreItem(id){
+      this.$router.push({ name: "ExploreAsset",  params: { id: id } });
+    }
   }
 };
 </script>

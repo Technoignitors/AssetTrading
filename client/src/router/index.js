@@ -6,6 +6,10 @@ import Orders from '../containers/Orders.vue'
 import SellAsset from '../containers/SellAsset.vue'
 import Dashboard from '../containers/Dashboard.vue'
 import MyAssets from '../containers/MyAssets.vue'
+import ExploreAsset from '../containers/ExploreAsset.vue'
+import OrderConfirmation from '../containers/OrderConfirmation.vue'
+import MyApprovals from '../containers/MyApprovals.vue'
+import ReSellAsset from '../containers/ReSellAsset.vue'
 
 Vue.use(Router)
 
@@ -22,6 +26,11 @@ export default new Router({
       component: Profile
     },
     {
+      path: '/myapprovals',
+      name: 'MyApprovals',
+      component: MyApprovals
+    },
+    {
       path: '/orders',
       name: 'Orders',
       component: Orders
@@ -30,6 +39,21 @@ export default new Router({
       path: '/myassets',
       name: 'MyAssets',
       component: MyAssets
+    },
+    {
+      path: '/exploreasset/:id',
+      name: 'ExploreAsset',
+      component: ExploreAsset
+    },
+    {
+      path: '/resellasset/:id',
+      name: 'ReSellAsset',
+      component: ReSellAsset
+    },
+    {
+      path: '/orderconfirmation/:assetId',
+      name: 'OrderConfirmation',
+      component: OrderConfirmation
     },
     {
       path: '/sellasset',
