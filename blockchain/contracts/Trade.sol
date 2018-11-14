@@ -42,14 +42,19 @@ contract UserContract{
         CreateUser(_userAddress, _initialBalance);
     }
 
-    function GetUser(address _userId) constant public returns(address _userAddress, uint _userBalance){
-        User storage user= users[_userId];
+    function GetUser(address _userAddress) constant public returns(address _userAddr, uint _userBalance){
+        User storage user= users[_userAddress];
         return (user.userAddress, user.userBalance);
+    }
+    
+    function GetUserBalance(address _userAddress) constant public returns(uint256){
+        return users[_userAddress].userBalance;
     }
 }
 
 contract TradeContract is AssetContract, UserContract{
     struct Order{
+        uint16 orderId;
         uint256 orderAmount;
         uint8 orderStatus;
         address buyer;
@@ -58,11 +63,7 @@ contract TradeContract is AssetContract, UserContract{
         uint8 orderDate;
     }
 
-    uint8 assetId=0;
-    uint8 userId=0;
-    uint8 orderId=0;
-
-    mapping(uint => Order) orders;
+    mapping(uint16 => Order) orders;
     enum OrderStatus {Created, Paid, Completed}
 
     function TradeContract() public{
@@ -85,15 +86,13 @@ contract TradeContract is AssetContract, UserContract{
         return (order.orderAmount, order.orderStatus, order.buyer, order.seller, order.assetId, order.orderDate);
     }
 
-    function GenerateOrder(uint8 _orderId,uint256 _orderAmount, uint8 _orderStatus, uint8 _buyerId, uint8 _sellerId, uint8 _assetId, uint8 _orderDate ) IsValidUser(_seller.userAddress) payable public{
-        User storage _buyer=users[_buyerId];
-        User storage _seller=users[_sellerId];
-        orders[_orderId] = Order({orderAmount:_orderAmount, orderStatus:_orderStatus, buyer:_buyer.userAddress, seller:_seller.userAddress, assetId:_assetId, orderDate:_orderDate});
-        _buyer.userBalance-=_orderAmount;
-        _seller.userBalance+=_orderAmount;
+    function GenerateOrder(uint16 _orderId,uint256 _orderAmount, uint8 _orderStatus, address _buyer, address _seller, uint8 _assetId, uint8 _orderDate ) IsValidUser(_buyer) payable public{
+        orders[_orderId] = Order({orderId:_orderId,orderAmount:_orderAmount, orderStatus:_orderStatus, buyer:_buyer, seller:_seller, assetId:_assetId, orderDate:_orderDate});
+        users[_buyer].userBalance-=_orderAmount;
+        users[_seller].userBalance+=_orderAmount;
         
-        CreateOrder(_orderId,_orderAmount, _orderStatus, _buyer.userAddress, _seller.userAddress, _assetId, _orderDate);
-        TransferAssetOwnership(_buyer.userAddress,_seller.userAddress,_assetId);
+        CreateOrder(_orderId,_orderAmount, _orderStatus, _buyer, _seller, _assetId, _orderDate);
+        TransferAssetOwnership(_buyer,_seller,_assetId);
     }
 
     function RegisterAsset(uint8 _sku,uint256 _price, address _owner, uint8 _lastModifiedOn) IsValidUser(_owner) public{
