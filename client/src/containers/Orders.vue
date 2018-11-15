@@ -2,7 +2,7 @@
   <v-data-table
     v-model="selected"
     :headers="headers"
-    :items="desserts"
+    :items="tableData"
     :pagination.sync="pagination"
     item-key="name"
     class="elevation-1"
@@ -33,61 +33,49 @@
   </v-data-table>
 </template>
 <script>
-  export default {
-    data: () => ({
-      pagination: {
-        sortBy: 'name'
+import PostsService from "@/services/PostsService";
+export default {
+  data: () => ({
+    pagination: {
+      sortBy: "Status"
+    },
+    selected: [],
+    headers: [
+      {
+        text: "Asset Name",
+        value: "Status"
       },
-      selected: [],
-      headers: [
-        {
-          text: 'Asset Name',
-          align: 'left',
-          value: 'name'
-        },
-        { text: 'Avail Discount', value: 'AvailDiscount' },
-        { text: 'Final Purchase Price', value: 'FinalPurchasePrice' },
-        { text: 'Discount Percentage', value: 'DiscountPercentage' },
-        { text: 'Discouned Amount', value: 'DiscounedAmount' },
-        { text: 'Status', value: 'Status' }
-      ],
-      desserts: [
-        {
-          value: false,
-          name: 'Frozen Yogurt',
-          AvailDiscount: true?'Yes':'No',
-          FinalPurchasePrice: 6.0,
-          DiscountPercentage: 24,
-          DiscounedAmount: 4.0,
-          Status: 'Pending'
-        },
-        {
-          value: false,
-          name: 'Ice cream sandwich',
-          AvailDiscount: true?'Yes':'No',
-          FinalPurchasePrice: 9.0,
-          DiscountPercentage: 37,
-          DiscounedAmount: 4.3,
-          Status: 'Pending'
-        }
-      ]
-    }),
+      { text: "Avail Discount", value: "AvailDiscount" },
+      { text: "Final Purchase Price", value: "FinalPurchasePrice" },
+      { text: "Discount Percentage", value: "DiscountPercentage" },
+      { text: "Discouned Amount", value: "DiscounedAmount" },
+      { text: "Status", value: "Status" }
+    ],
+    tableData: []
+  }),
 
-    methods: {
-      toggleAll () {
-        if (this.selected.length) this.selected = []
-        else this.selected = this.desserts.slice()
-      },
-      changeSort (column) {
-        if (this.pagination.sortBy === column) {
-          this.pagination.descending = !this.pagination.descending
-        } else {
-          this.pagination.sortBy = column
-          this.pagination.descending = false
-        }
+  methods: {
+    toggleAll() {
+      if (this.selected.length) this.selected = [];
+      else this.selected = this.tableData.slice();
+    },
+    changeSort(column) {
+      if (this.pagination.sortBy === column) {
+        this.pagination.descending = !this.pagination.descending;
+      } else {
+        this.pagination.sortBy = column;
+        this.pagination.descending = false;
       }
     }
+  },
+  mounted: async function() {
+    let response = await PostsService.getOrderHistory({
+      userID: localStorage.getItem("userID")
+    });
+    this.tableData = response.data.Orders;
+    //this.total = this.tableData.length;
   }
+};
 </script>
 <style scoped>
 </style>

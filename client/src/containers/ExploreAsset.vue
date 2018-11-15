@@ -1,6 +1,6 @@
 <template>
     <v-card  class="col-sm-12" style="padding:10px;">
-            <v-img
+           <v-img
             class="white--text"
             height="200px"
             src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
@@ -8,54 +8,28 @@
             <v-container fill-height fluid>
                 <v-layout fill-height>
                 <v-flex xs12 align-end flexbox>
-                    <span class="headline">{{assetDetails.Name}} - {{assetDetails.SKU}}</span>
+                    <span class="headline">{{data.Name}}</span>
                 </v-flex>
                 </v-layout>
             </v-container>
             </v-img>
             <v-card-title>
-            <div class="col-md-12">
-                <span class="grey--text">Description</span><br>
-                <span>{{assetDetails.Description}}</span><br>
+            <div>
+                <span class="col-md-12" style="margin-bottom:10px">Description : {{data.Description}}</span><br>
+                <span class="col-md-12" style="margin-bottom:10px">Specification : {{data.Specification}}</span><br>
+                <span class="col-md-12" style="margin-bottom:10px">Price: $ {{data.OwnerShipDetails.FinalPurchasePrice}}</span>
+                <span class="col-md-12" style="margin-bottom:10px">Seller: {{data.UserDetails.FirstName}}  {{data.UserDetails.LastName}}</span>
             </div>
-            <hr>
-            <div class="col-md-12">
-                <span class="grey--text">Specification</span><br>
-                <span>{{assetDetails.Specification}}</span><br>
-            </div>
-            <hr>
-            <div class="col-md-12">
-                <span class="grey--text">Reviews</span><br>
-                <span>{{assetDetails.Specification}}</span><br>
-            </div>
-
-             <hr>
-            <div class="col-md-12">
-                <span class="grey--text">Queries</span><br>
-                <span>{{assetDetails.Specification}}</span><br>
-            </div>
-
-             <hr>
-            <div class="col-md-12">
-                <span class="grey--text">Documents</span><br>
-                <span>{{assetDetails.Specification}}</span><br>
-            </div>
-
-             <hr>
-            <div class="col-md-12">
-                <span class="grey--text">Images</span><br>
-                <span>{{assetDetails.Specification}}</span><br>
-            </div>
-
             </v-card-title>
             <v-card-actions>
             <!-- <v-btn flat color="orange">Buy</v-btn> -->
-            <v-btn flat color="orange" @click="buyItem()">Buy Now</v-btn>
+            <v-btn flat color="orange" @click="buyItem(data._id)">Buy Asset</v-btn>
             </v-card-actions>
         </v-card>
 </template>
 
 <script>
+import PostsService from "@/services/PostsService";
 export default {
   data: function() {
     return {
@@ -94,7 +68,8 @@ export default {
         Documents: [],
         Images: [],
         __v: 0
-      }
+      },
+      data:{}
     };
   },
   methods: {
@@ -104,6 +79,15 @@ export default {
         params: { assetId: this.$route.params.id }
       });
     }
+  },
+  mounted: async function() {
+   
+    let response = await PostsService.getAssetDetails({
+      id: this.$route.params.id
+    });
+     console.log(response)
+    this.data = response.data.Assets;
+    this.total = response.data.Assets.length;
   }
 };
 </script>

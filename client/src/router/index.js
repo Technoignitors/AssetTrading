@@ -51,7 +51,7 @@ export default new Router({
       component: ReSellAsset
     },
     {
-      path: '/orderconfirmation/:assetId',
+      path: '/orderconfirmation/:id',
       name: 'OrderConfirmation',
       component: OrderConfirmation
     },

@@ -1,10 +1,8 @@
 <template>
     <v-card  class="col-sm-12" style="padding:10px;">
             <v-card-title>
-            <div>
-                <span class="grey--text">Number 10</span><br>
-                <span>Whitehaven Beach</span><br>
-                <span>Whitsunday Island, Whitsunday Islands</span>
+            <div class="text-center">
+                <span class="grey--text">Are you sure want to proceed further?</span><br>
             </div>
             </v-card-title>
             <v-card-actions>
@@ -15,11 +13,40 @@
 </template>
 
 <script>
+import PostsService from "@/services/PostsService";
 export default {
+  data: function() {
+    return {
+      data: {}
+    };
+  },
   methods: {
-    confirmOrder() {
-      this.$router.push({ name: "Orders" });
+    async confirmOrder() {
+      //this.$router.push({ name: "Orders" });
+      var request = {
+        userID: localStorage.getItem("userID"),
+        AssetID: this.$route.params.id,
+        Status: "Pending",
+        FinalPurchasePrice:this.data.OwnerShipDetails.FinalPurchasePrice,
+        DiscountPercentage:0,
+        DiscounedAmount:0
+      };
+      let response = await PostsService.setOrder(request);
+      if (!response.data.errors) {
+         console.log(response);
+         this.$router.push({ name: "Orders" });
+      } else {
+        console.log(response);
+        this.$router.push({ name: "Orders" });
+      }
     }
+  },
+  mounted: async function() {
+    let response = await PostsService.getAssetDetails({
+      id: this.$route.params.id
+    });
+    this.data = response.data.Assets;
+    this.total = response.data.Assets.length;
   }
 };
 </script>

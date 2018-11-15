@@ -70,9 +70,11 @@ router.post("/login", auth.optional, (req, res, next) => {
       }
 
       if (passportUser) {
+        console.log(passportUser.role)
         const user = passportUser;
         user.token = passportUser.generateJWT();
-        return res.json({ user: user.toAuthJSON() });
+        const role = passportUser.role;
+        return res.json({ user: user.toAuthJSON(), role:role });
       }
       return res.status(200).json({
         errors: {

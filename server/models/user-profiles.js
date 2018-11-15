@@ -15,8 +15,7 @@ const UsersSchema = new Schema({
   LandLine: Number,
   Email: String,
   SecondaryEmail: String,
-
-  ResidentStatus: { type: String, enum: ["Indian", "NRI"], default: "Indian" },
+  // ResidentStatus: { type: String, enum: ["Indian", "NRI"], default: "Indian" },
   CorrospondenceAddressStreet1: String,
   CorrospondenceAddressStreet2: String,
   CorrospondenceAddressCity: String,

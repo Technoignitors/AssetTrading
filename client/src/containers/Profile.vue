@@ -17,7 +17,7 @@
                     :rules="nameRules"
                     :error-messages="errorMessages"
                     :counter="10"
-                    label="FirstName"
+                    label="First Name"
                     class="col-md-6"
                     required
                     ></v-text-field>
@@ -25,7 +25,7 @@
                     <v-text-field
                     v-model="formData.MaidenName"
                     ref="maidenName"
-                    label="MaidenName"
+                    label="Maiden Name"
                     class="col-md-6"
                     ></v-text-field>
 
@@ -33,7 +33,7 @@
                     v-model="formData.LastName"
                     ref="lastName"
                     :rules="nameRules"
-                    label="LastName"
+                    label="Last Name"
                     class="col-md-6"
                     required
                     ></v-text-field>
@@ -42,7 +42,7 @@
                     v-model="formData.FatherName"
                     ref="fatherName"
                     :rules="nameRules"
-                    label="FatherName"
+                    label="Father Name"
                     class="col-md-6"
                     required
                     ></v-text-field>
@@ -88,7 +88,7 @@
                     v-model="formData.SecondaryEmail"
                     ref="secondaryEmail"
                     :rules="emailRules"
-                    label="SecondaryEmail"
+                    label="Secondary Email"
                     class="col-md-6"
                     required
                     ></v-text-field>
@@ -107,7 +107,7 @@
                     <v-text-field
                     v-model="formData.CorrospondenceAddressStreet1"
                     :rules="nameRules"
-                    label="CorrospondenceAddressStreet1"
+                    label="Street1"
                     class="col-md-6"
                     required
                     ></v-text-field>
@@ -115,7 +115,7 @@
                     <v-text-field
                     v-model="formData.CorrospondenceAddressStreet2"
                     :rules="nameRules"
-                    label="CorrospondenceAddressStreet2"
+                    label="Street2"
                     class="col-md-6"
                     required
                     ></v-text-field>
@@ -123,7 +123,7 @@
                     <v-text-field
                     v-model="formData.CorrospondenceAddressCity"
                     :rules="nameRules"
-                    label="CorrospondenceAddressCity"
+                    label="City"
                     class="col-md-6"
                     required
                     ></v-text-field>
@@ -131,7 +131,7 @@
                     <v-text-field
                     v-model="formData.CorrospondenceAddressState"
                     :rules="nameRules"
-                    label="CorrospondenceAddressState"
+                    label="State"
                     class="col-md-6"
                     required
                     ></v-text-field>
@@ -139,7 +139,7 @@
                     <v-text-field
                     v-model="formData.CorrospondenceAddressCountry"
                     :rules="nameRules"
-                    label="CorrospondenceAddressCountry"
+                    label="Country"
                     class="col-md-6"
                     required
                     ></v-text-field>
@@ -147,21 +147,21 @@
                     <v-text-field
                     v-model="formData.CorrospondenceAddressZipCode"
                     :rules="nameRules"
-                    label="CorrospondenceAddressZipCode"
+                    label="ZipCode"
                     class="col-md-6"
                     required
                     ></v-text-field>
 
-                     <v-checkbox
+                     <!-- <v-checkbox
                     :label="`Same as Corrospondence Address`" class="col-md-12"
                     v-model="formData.SameAsCorrospondence"
-                    ></v-checkbox>
+                    ></v-checkbox> -->
 
-                    <div v-if="!formData.SameAsCorrospondence">
+                    <div v-if="false">
                         <v-text-field
                         v-model="formData.PermanentAddressStreet1"
                         :rules="nameRules"
-                        label="PermanentAddressStreet1"
+                        label="Street1"
                         class="col-md-6"
                         required
                         ></v-text-field>
@@ -169,7 +169,7 @@
                         <v-text-field
                         v-model="formData.PermanentAddressStreet2"
                         :rules="nameRules"
-                        label="PermanentAddressStreet2"
+                        label="Street2"
                         class="col-md-6"
                         required
                         ></v-text-field>
@@ -177,7 +177,7 @@
                         <v-text-field
                         v-model="formData.PermanentAddressCity"
                         :rules="nameRules"
-                        label="PermanentAddressCity"
+                        label="City"
                         class="col-md-6"
                         required
                         ></v-text-field>
@@ -185,7 +185,7 @@
                         <v-text-field
                         v-model="formData.PermanentAddressState"
                         :rules="nameRules"
-                        label="PermanentAddressState"
+                        label="State"
                         class="col-md-6"
                         required
                         ></v-text-field>
@@ -193,7 +193,7 @@
                         <v-text-field
                         v-model="formData.PermanentAddressCountry"
                         :rules="nameRules"
-                        label="PermanentAddressCountry"
+                        label="Country"
                         class="col-md-6"
                         required
                         ></v-text-field>
@@ -202,7 +202,7 @@
                         <v-text-field
                         v-model="formData.PermanentAddressZipCode"
                         :rules="nameRules"
-                        label="PermanentAddressZipCode"
+                        label="ZipCode"
                         class="col-md-6"
                         required
                         ></v-text-field>
@@ -215,14 +215,14 @@
         <v-card v-if="item=='Occupation'">
           <v-card-text class="grey lighten-3">
                 <div class="row">
-                    <v-checkbox
+                    <!-- <v-checkbox
                     :label="`If Employed`" class="col-md-12"
                     v-model="formData.IfEmployed"
-                    ></v-checkbox>
+                    ></v-checkbox> -->
 
                     <v-text-field
                     v-model="formData.PAN"
-                    :rules="numericRules"
+                    :rules="nameRules"
                     :counter="10"
                     label="PAN"
                     class="col-md-6"
@@ -241,20 +241,20 @@
                     <v-text-field
                     v-model="formData.GrossIncome"
                     :rules="numericRules"
-                    label="GrossIncome"
+                    label="Total Income"
                     class="col-md-6"
                     required
                     ></v-text-field>
 
-                    <v-text-field
+                    <!-- <v-text-field
                     v-model="formData.NetWorth"
                     :rules="numericRules"
                     label="NetWorth"
                     class="col-md-6"
                     required
-                    ></v-text-field>
+                    ></v-text-field> -->
 
-                    <v-checkbox
+                    <!-- <v-checkbox
                     :label="`GST Registered ?`" class="col-md-12"
                     v-model="formData.GSTRegistered"
                     ></v-checkbox>
@@ -265,7 +265,7 @@
                     label="GST"
                     class="col-md-6"
                     required
-                    ></v-text-field>
+                    ></v-text-field> -->
                 </div>
           </v-card-text>
         </v-card>
@@ -292,67 +292,72 @@ export default {
         v => /.+@.+/.test(v) || "E-mail must be valid"
       ],
       nameRules: [v => !!v || "Field is required"],
-      numericRules:[
+      numericRules: [
         v => !!v || "Field is required",
         v => /^[0-9]*$/.test(v) || "Field must be valid number"
       ],
-      valid:false,
-      errorMessages:"",
+      valid: false,
+      errorMessages: "",
       formData: {
-        FirstName: "Test",
-        LastName: "test",
-        MaidenName: "test",
-        DOB: "12-12-1989",
-        FatherName: "test",
-        Mobile: "123457895",
-        LandLine: "123457895",
-        Email: "test@test.com",
-        SecondaryEmail: "test@test.com",
-        ResidentStatus: "Indian",
-        CorrospondenceAddressStreet1: "test",
-        CorrospondenceAddressStreet2: "test",
-        CorrospondenceAddressCity: "test",
-        CorrospondenceAddressState: "test",
-        CorrospondenceAddressCountry: "test",
-        CorrospondenceAddressZipCode: "test",
-        PermanentAddressStreet1: "test",
-        PermanentAddressStreet2: "test",
-        PermanentAddressCity: "test",
-        PermanentAddressState: "test",
-        PermanentAddressCountry: "test",
-        PermanentAddressZipCode: "test",
+        FirstName: "",
+        LastName: "",
+        MaidenName: "",
+        DOB: "",
+        FatherName: "",
+        Mobile: "",
+        LandLine: "",
+        Email: "",
+        SecondaryEmail: "",
+        ResidentStatus: "",
+        CorrospondenceAddressStreet1: "",
+        CorrospondenceAddressStreet2: "",
+        CorrospondenceAddressCity: "",
+        CorrospondenceAddressState: "",
+        CorrospondenceAddressCountry: "",
+        CorrospondenceAddressZipCode: "",
+        PermanentAddressStreet1: "",
+        PermanentAddressStreet2: "",
+        PermanentAddressCity: "",
+        PermanentAddressState: "",
+        PermanentAddressCountry: "",
+        PermanentAddressZipCode: "",
         IfEmployed: true,
-        PAN: "test",
-        Occupation: "test",
-        GrossIncome: "123456",
-        NetWorth: "123456",
+        PAN: "",
+        Occupation: "",
+        GrossIncome: "",
+        NetWorth: "",
         GSTRegistered: true,
-        GST: "test",
-        Mtoken: "50000",
-        SameAsCorrospondence: true,
+        GST: "",
+        Mtoken: "",
+        SameAsCorrospondence: true
       }
     };
   },
   computed: {
     Form() {
-      return this.formData
+      return this.formData;
     }
   },
   methods: {
     async submit() {
       if (this.$refs.form.validate()) {
-        let response = await PostsService.setUserProfile(this.Form);
-        console.log(response);
+        await PostsService.setUserProfile(this.Form);
+        let response = await PostsService.getUserProfile();
+        if (!response.data.errors) {
+          this.formData = response.data.userProfile;
+        } else {
+          console.log(response);
+        }
       }
     },
     clear() {
       this.$refs.form.reset();
     }
   },
-  created: async function() {
+  mounted: async function() {
     let response = await PostsService.getUserProfile();
     if (!response.data.errors) {
-        this.formData = response.data.userProfile;
+      this.formData = response.data.userProfile;
     } else {
       console.log(response);
       //alert(response.data.errors.error);

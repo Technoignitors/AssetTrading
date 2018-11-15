@@ -28,14 +28,14 @@
                         <p>My Orders</p>
                     </a>
                 </router-link>
-                <router-link to="/myapprovals" tag="li" exact active-class="active"><a>
+                <router-link to="/myapprovals" tag="li" exact active-class="active" v-if="userRole == 'admin'"><a>
                         <i class="pe-7s-news-paper"></i>
                         <p>My Approvals</p>
                     </a>
                 </router-link>
                 <router-link to="/sellasset" tag="li" exact active-class="active"><a>
                         <i class="pe-7s-news-paper"></i>
-                        <p>Sell Asset</p>
+                        <p>Add Asset</p>
                     </a>
                 </router-link>
                  <router-link to="/profile" tag="li" exact class="active-pro"><a>
@@ -52,7 +52,11 @@
 
 <script>
 export default {
-    
+    data: function(){
+        return {
+            userRole: localStorage.getItem('userRole')
+        }
+    }
 }
 </script>
 

@@ -58,11 +58,19 @@
                       item-value="_id"
                     ></v-select>
 
+                    <v-text-field
+                    v-model="formData.FinalPurchasePrice"
+                    :rules="numericRules"
+                    label="Final Purchase Price"
+                    class="col-md-6"
+                    required
+                    ></v-text-field>
+
             </div>
           </v-card-text>
         </v-card>
 
-        <v-card v-if="item=='Documents'">
+        <v-card v-if="item=='Images'">
           <v-card-text class="grey lighten-3">
                 <div class="row">
                     <!-- <v-text-field
@@ -73,8 +81,8 @@
                     ></v-text-field> -->
 
                     <b-form-file v-model="file" :state="Boolean(file)" multiple class="col-md-6" placeholder="Choose a file..."></b-form-file>
-
-                    <b-form-file v-model="file" :state="Boolean(file)" multiple class="col-md-6" placeholder="Choose a file..."></b-form-file>
+                    <input type="file" @change="uploadImage" name="image" id="image"  accept="image/*" multiple >
+                    <!-- <b-form-file v-model="file" :state="Boolean(file)" multiple class="col-md-6" placeholder="Choose a file..."></b-form-file> -->
                     <!-- <b-form-file v-model="file" class="mt-3" plain></b-form-file> -->
 
                     <!-- <v-text-field
@@ -158,7 +166,7 @@ export default {
   },
   data: function() {
     return {
-      panels: ["Basic", "Offers And Discounts", "Documents"],
+      panels: ["Basic", "Images"],
       panel: [],
       emailRules: [
         v => !!v || "E-mail is required",
@@ -177,18 +185,19 @@ export default {
       showNotification: false,
       notificationMessage: "",
       formData: {
-        SKU: "Test",
-        Category: "test",
-        Name: "test",
-        Description: "12-12-1989",
-        Specification: "test",
+        SKU: "",
+        Category: "",
+        Name: "",
+        Description: "",
+        Specification: "",
         AvailDiscount: true,
-        DiscountPercentage: 10,
-        DiscounedAmount: 1234,
-        AssetPrice: 1254,
-        FinalPurchasePrice: 1452,
+        DiscountPercentage: "",
+        DiscounedAmount: "",
+        AssetPrice: "",
+        FinalPurchasePrice: "",
         Category: "5bd94c5aabef9e4d544ffc11"
-      }
+      },
+      images : []
     };
   },
   computed: {
@@ -200,11 +209,17 @@ export default {
     async submit() {
       this.showNotification = false;
       if (this.$refs.form.validate()) {
-        let response = await PostsService.uploadAsset(this.Form);
+        let request = this.Form;
+        request.id = localStorage.getItem("userID")
+        let response = await PostsService.uploadAsset(request);
+        let fd= new FormData()
+        fd.append("Id", response.data.result._id);
+        fd.append('Images', this.images)
+        //let categories = await PostsService.uploadAssetImages(fd);
         if (response.data.error) {
           this.showNotification = true;
           this.notificationMessage = response.data.error;
-        }else{
+        } else {
           this.showNotification = true;
           this.notificationMessage = "Asset Listed Successfully";
         }
@@ -212,6 +227,15 @@ export default {
     },
     clear() {
       this.$refs.form.reset();
+    },
+
+    uploadImage (e) {
+      console.log(e.target.files)
+      for (let index = 0; index < e.target.files.length; index++) {
+          this.images.push(e.target.files[index]) ;
+      }
+    
+      console.log(this.images)
     }
   },
   created: async function() {
