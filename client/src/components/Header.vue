@@ -12,11 +12,13 @@
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li>
-                           <a>
-                               <p @click="gotoProfile()">Account</p>
-                            </a>
-                        </li>
+                      <li>
+                        <a>{{userData.FirstName}} {{userData.LastName}}</a>
+                      </li>
+                      
+                      <li>
+                        <a>Balance : <span style="font-weight:bold">{{userData.Mtoken}}</span></a>
+                      </li>
                         <li>
                             <a id="logout">
                                 <p @click="logout()">Log Out</p>
@@ -34,6 +36,11 @@ import JQuery from "jquery";
 import PostsService from "@/services/PostsService";
 var $ = JQuery;
 export default {
+  data:function(){
+    return{
+      userData:{}
+    }
+  },
   methods: {
     async logout() {
       let response = await PostsService.logout();
@@ -46,6 +53,17 @@ export default {
     },
     gotoProfile() {
       this.$router.push("/profile");
+    }
+  },
+  mounted: async function() {
+    let response = await PostsService.getUserProfile({
+      id: localStorage.getItem("userID")
+    });
+    if (!response.data.errors) {
+      this.userData = response.data.userProfile;
+    } else {
+      console.log(response);
+      //alert(response.data.errors.error);
     }
   }
 };

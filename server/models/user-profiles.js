@@ -28,6 +28,7 @@ const UsersSchema = new Schema({
   PermanentAddressState: String,
   PermanentAddressCountry: String,
   PermanentAddressZipCode: String,
+  bAddress: String,
 
   IfEmployed: Boolean,
   PAN: String,
@@ -36,7 +37,10 @@ const UsersSchema = new Schema({
   NetWorth: Number,
   GSTRegistered: Boolean,
   GST: String,
-  Mtoken: Number,
+  Mtoken: {
+    type: Number,
+    default: 1000
+  },
   ProfileImage: String,
   CreatedOn: {
     type: Date,

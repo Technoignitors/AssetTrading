@@ -115,13 +115,13 @@ router.get("/logout", function(req, res) {
   }
 });
 
-router.get(
+router.post(
   "/getUserProfile",
   auth.required,
   isValidUser,
   async (req, res, next) => {
     try {
-      let UserId = req.payload.id;
+      let UserId = req.body.id;
       let _up = await UserProfile.findOne({ UserId: UserId }).exec();
       
       if (!_up) {
@@ -192,7 +192,7 @@ router.post(
         const ID = _up._id;
         req.body.UpdatedOn = new Date();
         await UserProfile.findOneAndUpdate(
-          ID,
+          {_id:ID},
           { $set: req.body },
           { new: true }
         ).exec(async (err, result) => {

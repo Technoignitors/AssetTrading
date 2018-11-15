@@ -1,20 +1,20 @@
-var Web3 = require('web3');
+var Web3 = require("web3");
 //var web3Address = new Web3("http://localhost:7545");
-var web3 = new Web3("http://localhost:7545");
+var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
 //let web3 = new Web3(new Web3.providers.HttpProviders(web3Address));
-    // if (typeof Web3 !== "undefined") {
-    //   web3 = new Web3(web3.currentProvider);
-    // } else {
-    //   web3 = new Web3(new Web3.providers.HttpProviders(web3Address));
-    // }
+// if (typeof Web3 !== "undefined") {
+//   web3 = new Web3(web3.currentProvider);
+// } else {
+//   web3 = new Web3(new Web3.providers.HttpProviders(web3Address));
+// }
 
-console.log(web3);
+// console.log(web3.eth.accounts);
 
 // set the default account
 web3.eth.defaultAccount = web3.eth.accounts[0];
 
-console.log(web3.eth.accounts[0]);
-console.log(web3.eth.defaultAccount);
+//console.log("accounts",web3.eth.accounts[0]);
+//console.log("defaultAccount",web3.eth.defaultAccount);
 
 //var contract = new web3.eth.Contract(abi, address);
 
@@ -165,11 +165,30 @@ var tradecontractContract = web3.eth.contract([
   }
 ]);
 
+
+
 //Get from deployed contract
 var tradeContract = tradecontractContract.at(
-  "0x1e6be09283cc020872ea639f5bfce28d741e3e95"
+  "0xc56742aba094375998bc3d428a7af76758713fca"
 );
+console.log("---------------");
+//console.log(tradeContract);
 
-console.log(tradeContract);
+function CreateAsset(_sku,_price, _owner, _lastModifiedOn){
+    tradeContract.RegisterAsset(_sku,_price, _owner, _lastModifiedOn);
+}
 
-function CreateAsset(_sku, _price, _owner, _lastModifiedOn) {}
+//CreateAsset(102,1002,'0xC7e4F8C8F2182b86e4df4D89Bb8cDe5C32C970CA',12541)
+
+function GetAsset(sku) {
+    tradeContract.GetAsset(sku,function(error, result) {
+      if (!error) {
+        console.log("BlockChain GetAsset ------>", result);
+      } else {
+        console.log(error);
+      }
+    });
+  }
+
+  let resp = GetAsset(102)
+

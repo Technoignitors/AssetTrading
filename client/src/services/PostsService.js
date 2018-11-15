@@ -28,8 +28,8 @@ export default {
   logout () {
     return Api().get('users/logout')
   },
-  getUserProfile () {
-    return Api().get('users/getUserProfile', header)
+  getUserProfile (data) {
+    return Api().post('users/getUserProfile',data, header)
   },
   setUserProfile (data) {
     return Api().post('users/userProfile', data, header)

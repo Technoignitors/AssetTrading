@@ -13,7 +13,7 @@
                         <p>Dashboard</p>
                     </a>
                 </router-link>
-                <router-link to="/profile" tag="li" exact active-class="active" v-if="userRole != 'admin'"><a>
+                <router-link to="/profile" tag="li" exact active-class="active" ><a>
                         <i class="pe-7s-user"></i>
                         <p>Profile</p>
                     </a>

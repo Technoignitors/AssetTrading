@@ -92,6 +92,15 @@
                     class="col-md-6"
                     required
                     ></v-text-field>
+
+                    <v-text-field
+                    v-model="formData.bAddress"
+                    ref="bAddress"
+                    :rules="nameRules"
+                    label="BlockChain Address"
+                    class="col-md-6"
+                    required
+                    ></v-text-field>
             </div>
           </v-card-text>
         </v-card>
@@ -342,7 +351,9 @@ export default {
     async submit() {
       if (this.$refs.form.validate()) {
         await PostsService.setUserProfile(this.Form);
-        let response = await PostsService.getUserProfile();
+        let response = await PostsService.getUserProfile({
+          id: localStorage.getItem("userID")
+        });
         if (!response.data.errors) {
           this.formData = response.data.userProfile;
         } else {
@@ -355,7 +366,9 @@ export default {
     }
   },
   mounted: async function() {
-    let response = await PostsService.getUserProfile();
+    let response = await PostsService.getUserProfile({
+      id: localStorage.getItem("userID")
+    });
     if (!response.data.errors) {
       this.formData = response.data.userProfile;
     } else {
