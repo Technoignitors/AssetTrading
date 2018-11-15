@@ -178,7 +178,17 @@ function CreateAsset(_sku,_price, _owner, _lastModifiedOn){
     tradeContract.RegisterAsset(_sku,_price, _owner, _lastModifiedOn);
 }
 
-//CreateAsset(102,1002,'0xC7e4F8C8F2182b86e4df4D89Bb8cDe5C32C970CA',12541)
+function CreateUser(_userAddress,balance){
+  tradeContract.RegisterUser(_userAddress,balance);
+}
+
+function CreateOrder(_orderId,_orderAmount, _orderStatus, _buyer, _seller, _sku, _orderDate ){
+  tradeContract.GenerateOrder(_orderId,_orderAmount, _orderStatus, _buyer, _seller, _sku, _orderDate);
+}
+
+//CreateAsset(103,2500,'0xC7e4F8C8F2182b86e4df4D89Bb8cDe5C32C970CA',1254)
+//CreateUser('0xC2FA5d53f36ac2912944df845852Cd5d1c0EDF20',1500)
+//CreateOrder(101,1200,1,'0xC7e4F8C8F2182b86e4df4D89Bb8cDe5C32C970CA','0xC2FA5d53f36ac2912944df845852Cd5d1c0EDF20',102,12541)
 
 function GetAsset(sku) {
     tradeContract.GetAsset(sku,function(error, result) {
@@ -190,5 +200,38 @@ function GetAsset(sku) {
     });
   }
 
-  let resp = GetAsset(102)
+  function GetOrder(orderID) {
+    tradeContract.GetOrder(orderID,function(error, result) {
+      if (!error) {
+        console.log("BlockChain GetOrder ------>", result);
+      } else {
+        console.log(error);
+      }
+    });
+  }
+
+  function GetUserBalance(_userAddress) {
+    tradeContract.GetUserBalance(_userAddress,function(error, result) {
+      if (!error) {
+        console.log("BlockChain GetUserBalance ------>", result);
+      } else {
+        console.log(error);
+      }
+    });
+  }
+
+  function GetUser(_userAddress) {
+    tradeContract.GetUser(_userAddress,function(error, result) {
+      if (!error) {
+        console.log("BlockChain GetUser ------>", result);
+      } else {
+        console.log(error);
+      }
+    });
+  }
+
+ GetAsset(102)
+ GetUser('0x40257f4d02f45271fff4cBDccdd4c2e936f3DBd9')
+ GetUserBalance('0x40257f4d02f45271fff4cBDccdd4c2e936f3DBd9')
+ GetOrder(102)
 
