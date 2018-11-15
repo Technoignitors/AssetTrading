@@ -57,5 +57,11 @@ export default {
   },
   getOrderHistory (data) {
     return Api().post('orders/getOrderHistory', data, header)
+  },
+  getAllAssets () {
+    return Api().get('orders/getAllAssets', header)
+  },
+  getAllPendingOrder () {
+    return Api().get('orders/getAllPendingOrder', header)
   }
 }

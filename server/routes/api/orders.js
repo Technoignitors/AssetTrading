@@ -45,6 +45,43 @@ router.post(
   }
 );
 
+router.get(
+  "/getAllPendingOrder",
+  auth.required,
+  isValidUser,
+  async (req, res, next) => {
+    try {
+      let orderHistory = await OrderHistory.find({ Status: 'Pending' })
+        .lean()
+        .exec();
+
+      let Owners = {};
+      let userDetails = {};
+      for (let index = 0; index < orderHistory.length; index++) {
+        Owners = await AssetOwnership.find({
+          AssetID: orderHistory[index].AssetID
+        })
+          .lean()
+          .exec();
+        userDetails = await UserProfile.find({
+          UserId: req.body.userID
+        })
+          .lean()
+          .exec();
+        orderHistory[index].UserDetails = userDetails[0];
+        orderHistory[index].OwnerShipDetails = Owners[0];
+      }
+      return await res.json({ Orders: orderHistory });
+    } catch (error) {
+      return res.status(200).json({
+        errors: {
+          error: error
+        }
+      });
+    }
+  }
+);
+
 // To save order details
 router.post("/setOrder", auth.required, isValidUser, async (req, res, next) => {
   try {

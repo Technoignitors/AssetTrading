@@ -137,7 +137,7 @@ router.post("/getDashboardAssets", auth.required, async (req, res, next) => {
   }
 });
 
-router.post("/getAllAssets", auth.required, async (req, res, next) => {
+router.get("/getAllAssets", auth.required, async (req, res, next) => {
   try {
     let assets = await Asset.find()
       .lean()

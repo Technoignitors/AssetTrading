@@ -17,15 +17,15 @@
             </v-img>
             <v-card-title>
             <div>
-                <span class="grey--text col-md-12">Description : {{item.Description}}</span><br>
-                <span class="col-md-12">Specification : {{item.Specification}}</span><br>
-                <span class="col-md-12">FinalPurchasePrice: $ {{item.OwnerShipDetails.FinalPurchasePrice}}</span>
-                <span class="col-md-12">User: {{item.UserDetails.FirstName}}  {{item.UserDetails.LastName}}</span>
+                <span class="col-md-12" style="margin-bottom:10px">Description : {{item.Description}}</span><br>
+                <span class="col-md-12" style="margin-bottom:10px">Specification : {{item.Specification}}</span><br>
+                <span class="col-md-12" style="margin-bottom:10px">FinalPurchasePrice: $ {{item.OwnerShipDetails.FinalPurchasePrice}}</span>
+                <!-- <span class="col-md-12">User: {{item.UserDetails.FirstName}}  {{item.UserDetails.LastName}}</span> -->
             </div>
             </v-card-title>
             <v-card-actions>
             <!-- <v-btn flat color="orange">Buy</v-btn> -->
-            <v-btn flat color="orange" @click="resell(i)">Sell</v-btn>
+            <v-btn flat color="orange" @click="resell(i)">Delete Asset</v-btn>
             </v-card-actions>
         </v-card>
     </div>

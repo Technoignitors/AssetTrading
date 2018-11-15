@@ -62,19 +62,27 @@ export default {
           src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg"
         }
       ],
-      total:0,
-      data:[]
+      total: 0,
+      data: []
     };
   },
-  methods:{
-    exploreItem(id){
-      this.$router.push({ name: "ExploreAsset",  params: { id: id } });
+  methods: {
+    exploreItem(id) {
+      this.$router.push({ name: "ExploreAsset", params: { id: id } });
     }
   },
   mounted: async function() {
-      let response = await PostsService.getDashboardAssets({id:localStorage.getItem("userID")});
-      this.data = response.data.Assets;
-      this.total = response.data.Assets.length
+    let role = localStorage.getItem("userID");
+    let response;
+    if (role != "admin") {
+      response = await PostsService.getDashboardAssets({
+        id: localStorage.getItem("userID")
+      });
+    } else {
+      response = await PostsService.getAllAssets();
     }
+    this.data = response.data.Assets;
+    this.total = response.data.Assets.length;
+  }
 };
 </script>
