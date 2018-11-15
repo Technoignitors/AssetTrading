@@ -33,7 +33,7 @@
                         <p>My Approvals</p>
                     </a>
                 </router-link>
-                <router-link to="/myapprovals" tag="li" exact active-class="active" v-if="userRole == 'admin'"><a>
+                <router-link to="/assetlog" tag="li" exact active-class="active" v-if="userRole == 'admin'"><a>
                         <i class="pe-7s-news-paper"></i>
                         <p>Asset History</p>
                     </a>

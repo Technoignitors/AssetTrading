@@ -43,7 +43,7 @@ export default {
     headers: [
       {
         text: "Asset Name",
-        value: "Status"
+        value: "_id"
       },
       { text: "Avail Discount", value: "AvailDiscount" },
       { text: "Final Purchase Price", value: "FinalPurchasePrice" },

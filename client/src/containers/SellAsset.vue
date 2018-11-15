@@ -221,6 +221,7 @@ export default {
           this.notificationMessage = response.data.error;
         } else {
           this.showNotification = true;
+          this.$refs.form.reset();
           this.notificationMessage = "Asset Listed Successfully";
         }
       }

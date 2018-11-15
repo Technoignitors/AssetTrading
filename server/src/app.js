@@ -6,11 +6,14 @@ const morgan = require('morgan')
 const errorHandler = require('errorhandler');
 const isProduction = process.env.NODE_ENV === 'production';
 const app = express();
+const web3Connector = require('../config/web3Connector.js');
 
 var corsOptions = {
   origin: '*',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
 }
+
+console.log(web3Connector)
 
 app.use(morgan('combined'))
 app.use(bodyParser.json())

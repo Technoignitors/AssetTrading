@@ -23,13 +23,13 @@
     </template>
     <template slot="items" slot-scope="props">
       <tr :active="props.selected" @click="props.selected = !props.selected">
-        <td>{{ props.item.Status }}</td>
+        <td>{{ props.item._id }}</td>
         <td class="text-xs-right">{{ props.item.AvailDiscount }}</td>
         <td class="text-xs-right">{{ props.item.FinalPurchasePrice }}</td>
         <td class="text-xs-right">{{ props.item.FinalPurchasePrice }}</td>
         <td class="text-xs-right">{{ props.item.FinalPurchasePrice }}</td>
         <td>
-            <button class="btn btn-sm btn-success" @click="approveOrder(props.item._id)">Approve</button>&nbsp;&nbsp;
+            <button class="btn btn-sm btn-success" @click="approveOrder(props.item._id, props.item.AssetID)">Approve</button>&nbsp;&nbsp;
             <button class="btn btn-sm btn-danger" @click="rejectOrder(props.item._id)">Reject</button>
         </td>
       </tr>
@@ -71,17 +71,18 @@ export default {
         this.pagination.descending = false;
       }
     },
-    async approveOrder(id) {
+    async approveOrder(id,AssetID) {
       console.log(id);
       var request = {
         userID: localStorage.getItem("userID"),
         OrderId: id,
-        Status: "Completed"
+        Status: "Completed",
+        AssetID:AssetID
       };
       let response = await PostsService.setOrder(request);
       if (!response.data.errors) {
          console.log(response);
-         this.$router.push({ name: "Orders" });
+         //this.$router.push({ name: "Orders" });
       } else {
         console.log(response);
         //this.$router.push({ name: "Orders" });
