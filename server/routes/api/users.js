@@ -224,7 +224,6 @@ router.post(
       } else {
         const ID = _up._id;
         req.body.UpdatedOn = new Date();
-        await web3Connector.CreateUser(req.body.bAddress, 1000);
         await UserProfile.findOneAndUpdate(
           { _id: ID },
           { $set: req.body },
@@ -233,6 +232,7 @@ router.post(
           await console.log("RESULT: " + result);
           return await res.json({ result });
         });
+       //await web3Connector.CreateUser(req.body.bAddress, 1000);
       }
     } catch (error) {
       return res.status(422).json({

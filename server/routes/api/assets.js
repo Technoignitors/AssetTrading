@@ -38,12 +38,13 @@ router.post("/upload", auth.required, isValidUser, async (req, res, next) => {
           CreatedBy: result.CreatedBy,
           UpdatedBy: result.CreatedBy
         };
-        let userInfo = await UserProfile.findOne({UserId:req.body.id}).lean().exec()
-        await web3Connector.CreateAsset(req.body.SKU ,req.body.FinalPurchasePrice, userInfo.bAddress, 1245)
         let assetOwnership = new AssetOwnership(request);
         assetOwnership.save().then(async result => {
           await res.json({ result });
         });
+        let userInfo = await UserProfile.findOne({UserId:req.body.id}).lean().exec()
+        //await web3Connector.CreateAsset(req.body.SKU ,req.body.FinalPurchasePrice, userInfo.bAddress, 1245)
+        
       });
     }
   } catch (error) {

@@ -148,22 +148,22 @@ router.post("/setOrder", auth.required, isValidUser, async (req, res, next) => {
               //return await res.json({ r });
             });
             let currentLoggedIN = await UserProfile.findOne({
-              UserId: req.body.userID
+              UserId: asset.PreviousOwner
             })
               .lean()
               .exec();
             let currentOwner = await UserProfile.findOne({ UserId: asset.CurrentOwner })
               .lean()
               .exec();
-            await web3Connector.CreateOrder(
-              result._id,
-              result.FinalPurchasePrice,
-              2,
-              currentLoggedIN.bAddress, // current logedded in user buyer
-              currentOwner.bAddress, // asset owner user is seller
-              SKU,
-              1321
-            );
+            // await web3Connector.CreateOrder(
+            //   result._id,
+            //   result.FinalPurchasePrice,
+            //   2,
+            //   currentLoggedIN.bAddress, // current logedded in user buyer
+            //   currentOwner.bAddress, // asset owner user is seller
+            //   SKU,
+            //   1321
+            // );
           }
         } else {
           let _req = {
