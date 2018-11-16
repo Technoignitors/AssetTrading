@@ -43,7 +43,7 @@ router.post("/upload", auth.required, isValidUser, async (req, res, next) => {
           await res.json({ result });
         });
         let userInfo = await UserProfile.findOne({UserId:req.body.id}).lean().exec()
-        //await web3Connector.CreateAsset(req.body.SKU ,req.body.FinalPurchasePrice, userInfo.bAddress, 1245)
+        await web3Connector.CreateAsset(req.body.SKU ,req.body.FinalPurchasePrice, userInfo.bAddress, 1245)
         
       });
     }

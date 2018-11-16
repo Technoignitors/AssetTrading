@@ -4,10 +4,11 @@
     <div style="padding:10px;" class="col-sm-6" v-for="(item,i) in data" :key="i">
         <v-card>
             <v-img
-            class="white--text"
+            
             height="200px"
-            src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+            src="https://raw.githubusercontent.com/Technoignitors/AssetTrading/branch-liyakat/car-data/car-pictures/car-placeholder.jpg"
             >
+           
             <v-container fill-height fluid>
                 <v-layout fill-height>
                 <v-flex xs12 align-end flexbox>
@@ -18,6 +19,7 @@
             </v-img>
             <v-card-title>
             <div class="col-md-12">
+               {{item.ImagePath}}
                 <span class="col-md-6" style="margin-bottom:10px"><b>Description</b> : {{item.Description}}</span>
                 <span class="col-md-6" style="margin-bottom:10px"><b>Specification</b> : {{item.Specification}}</span>
                 <span class="col-md-6" style="margin-bottom:10px"><b>FinalPurchasePrice</b>: $ {{item.OwnerShipDetails.FinalPurchasePrice}}</span>

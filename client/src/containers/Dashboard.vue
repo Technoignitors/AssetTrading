@@ -4,14 +4,14 @@
     <div style="padding:10px;" class="col-sm-6" v-for="(item,i) in data" :key="i">
          <v-card>
             <v-img
-            class="white--text"
+            
             height="200px"
-            src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+            src="https://raw.githubusercontent.com/Technoignitors/AssetTrading/branch-liyakat/car-data/car-pictures/car-placeholder.jpg"
             >
             <v-container fill-height fluid>
                 <v-layout fill-height>
                 <v-flex xs12 align-end flexbox>
-                    <span class="headline">{{item.Name}}</span>
+                    <span class="headline">{{item.Name}} {{item.SKU}}</span>
                 </v-flex>
                 </v-layout>
             </v-container>

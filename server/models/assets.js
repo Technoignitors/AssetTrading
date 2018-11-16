@@ -21,6 +21,10 @@ const AssetSchema = new Schema({
   Name: String,
   Description: String,
   Specification: String,
+  ImagePath:{
+    type:String,
+    default:"https://raw.githubusercontent.com/Technoignitors/AssetTrading/branch-liyakat/car-data/car-pictures/car-placeholder.jpg"
+  },
   CreatedOn: {
     type: Date,
     default: new Date()

@@ -1,9 +1,9 @@
 <template>
     <v-card  class="col-sm-7 col-md-offset-2" style="padding:10px;">
            <v-img
-            class="white--text"
+            
             height="200px"
-            src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+            src="https://raw.githubusercontent.com/Technoignitors/AssetTrading/branch-liyakat/car-data/car-pictures/car-placeholder.jpg"
             >
             <v-container fill-height fluid>
                 <v-layout fill-height>

@@ -108,8 +108,8 @@ router.get("/current", auth.required, (req, res, next) => {
 });
 
 router.post("/getBalance", auth.required, async (req, res, next) => {
-  let userInfo = await UserProfile.findOne({UserId:req.body.id}).lean().exec()
-  let balance = await web3Connector.GetUserBalance(userInfo.bAddress)
+  //let userInfo = await UserProfile.findOne({UserId:req.body.bAddress}).lean().exec()
+  let balance = await web3Connector.GetUserBalance(req.body.bAddress)
   if(balance){
     return res.json({ balance: balance.c[0] });
   }else{
@@ -128,7 +128,7 @@ router.post("/getEthUser", auth.required, async (req, res, next) => {
 });
 
 router.post("/getBalance", auth.required, async (req, res, next) => {
-  let userInfo = await UserProfile.findOne({UserId:req.body.id}).lean().exec()
+  let userInfo = await UserProfile.findOne({UserId:req.body.bAddress}).lean().exec()
   let balance = await web3Connector.GetUserBalance(userInfo.bAddress)
   if(balance){
     return res.json({ balance: balance.c[0] });
@@ -232,7 +232,7 @@ router.post(
           await console.log("RESULT: " + result);
           return await res.json({ result });
         });
-       //await web3Connector.CreateUser(req.body.bAddress, 1000);
+       await web3Connector.CreateUser(req.body.bAddress, 1000);
       }
     } catch (error) {
       return res.status(422).json({

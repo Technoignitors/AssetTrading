@@ -1,7 +1,7 @@
 var exports = (module.exports = {});
 var Web3 = require("web3");
 var web3Address = "http://localhost:7545";
-var contractAddress = "0x692a70d2e424a56d2c6c27aa97d1a86395877b3a";
+var contractAddress = "0xc56742aba094375998bc3d428a7af76758713fca";
 var web3 = new Web3(new Web3.providers.HttpProvider(web3Address));
 var defaultAccount = web3.eth.accounts[0];
 
@@ -258,5 +258,5 @@ exports.GetUser = function(_userAddress) {
 
 // GetAsset(101)
 // GetUser(defaultAccount)
-// GetUserBalance(defaultAccount)
+//exports.GetUserBalance("0xa484bdCCAF3Caf86E4b36c6c7dE473c2E5B426c1")
 //GetOrder(1001)

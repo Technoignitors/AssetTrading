@@ -63,5 +63,8 @@ export default {
   },
   getAllPendingOrder () {
     return Api().get('orders/getAllPendingOrder', header)
+  },
+  getBalance (data) {
+    return Api().post('users/getBalance',data, header)
   }
 }

@@ -17,7 +17,12 @@
                       </li>
                       
                       <li v-if="role !== 'admin'">
-                        <a>Balance : <span style="font-weight:bold">{{userData.Mtoken}}</span></a>
+                        <!-- <a>Balance : <span style="font-weight:bold">{{Balance}}</span></a> -->
+                         <v-chip>Balance: {{Balance}}</v-chip>
+                        <!-- <v-badge left>
+                      <span slot="badge">{{Balance}}</span>
+                      <span>Balance</span>
+                    </v-badge> -->
                       </li>
                         <li>
                             <a id="logout">
@@ -36,11 +41,12 @@ import JQuery from "jquery";
 import PostsService from "@/services/PostsService";
 var $ = JQuery;
 export default {
-  data:function(){
-    return{
-      userData:{},
-      role:'user'
-    }
+  data: function() {
+    return {
+      userData: {},
+      role: "user",
+      Balance:1000
+    };
   },
   methods: {
     async logout() {
@@ -57,12 +63,18 @@ export default {
     }
   },
   mounted: async function() {
-    this.role = sessionStorage.getItem("userRole")
+    this.role = sessionStorage.getItem("userRole");
     let response = await PostsService.getUserProfile({
       id: sessionStorage.getItem("userID")
     });
+
     if (!response.data.errors) {
       this.userData = response.data.userProfile;
+      let Balance = await PostsService.getBalance({
+        bAddress: this.userData.bAddress
+      });
+      this.Balance = Balance.data.balance
+      console.log(Balance)
     } else {
       console.log(response);
       //alert(response.data.errors.error);

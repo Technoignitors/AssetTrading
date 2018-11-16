@@ -10,6 +10,9 @@ const OrderHistorySchema = new Schema({
     type: Schema.ObjectId,
     ref: "Asset"
   },
+  BOrderID: {
+    type: Number,
+  },
   FinalPurchasePrice: Number,
   AvailDiscount: { type: Number, enum: [1, 2], default: 1 },
   DiscountPercentage: Number,

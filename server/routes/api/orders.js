@@ -155,15 +155,15 @@ router.post("/setOrder", auth.required, isValidUser, async (req, res, next) => {
             let currentOwner = await UserProfile.findOne({ UserId: asset.CurrentOwner })
               .lean()
               .exec();
-            // await web3Connector.CreateOrder(
-            //   result._id,
-            //   result.FinalPurchasePrice,
-            //   2,
-            //   currentLoggedIN.bAddress, // current logedded in user buyer
-            //   currentOwner.bAddress, // asset owner user is seller
-            //   SKU,
-            //   1321
-            // );
+            await web3Connector.CreateOrder(
+              result.BOrderID,
+              result.FinalPurchasePrice,
+              2,
+              currentOwner.bAddress, // asset owner user is seller,
+              currentLoggedIN.bAddress, // current logedded in user buyer
+              SKU,
+              1321
+            );
           }
         } else {
           let _req = {
@@ -186,6 +186,7 @@ router.post("/setOrder", auth.required, isValidUser, async (req, res, next) => {
     } else {
       req.body.UserID = req.body.userID;
       req.body.CreatedBy = req.body.userID;
+      req.body.BOrderID = Math.floor((Math.random() * 100) + 1);
       let orderHistory = new OrderHistory(req.body);
       return await orderHistory.save().then(result => res.json({ result }));
     }
