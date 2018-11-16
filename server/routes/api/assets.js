@@ -9,6 +9,7 @@ const AssetLogs = require("../../models/assetLogs");
 const Category = require("../../models/category");
 const isValidUser = require("../../config/validations/userValidation");
 const upload = require("../../config/image-upload");
+const web3Connector = require("../../config/web3Connector");
 
 router.post("/upload", auth.required, isValidUser, async (req, res, next) => {
   try {
@@ -24,7 +25,7 @@ router.post("/upload", auth.required, isValidUser, async (req, res, next) => {
       req.body.CreatedBy = req.body.id;
       req.body.UpdatedBy = req.body.id;
       let asset = new Asset(req.body);
-      return await asset.save().then(result => {
+      return await asset.save().then(async result => {
         let request = {
           CurrentOwner: result.CreatedBy,
           PreviousOwner: result.CreatedBy,
@@ -37,9 +38,11 @@ router.post("/upload", auth.required, isValidUser, async (req, res, next) => {
           CreatedBy: result.CreatedBy,
           UpdatedBy: result.CreatedBy
         };
+        let userInfo = await UserProfile.findOne({UserId:req.body.id}).lean().exec()
+        await web3Connector.CreateAsset(req.body.SKU ,req.body.FinalPurchasePrice, userInfo.bAddress, 1245)
         let assetOwnership = new AssetOwnership(request);
-        assetOwnership.save().then(result => {
-          res.json({ result });
+        assetOwnership.save().then(async result => {
+          await res.json({ result });
         });
       });
     }

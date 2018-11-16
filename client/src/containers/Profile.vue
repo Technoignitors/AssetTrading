@@ -42,19 +42,17 @@
                     <v-text-field
                     v-model="formData.FatherName"
                     ref="fatherName"
-                    :rules="nameRules"
                     label="Father Name"
                     class="col-md-6"
-                    required
+                    
                     ></v-text-field>
 
                     <v-text-field
                     v-model="formData.DOB"
                     ref="dob"
-                    :rules="nameRules"
                     label="DOB"
                     class="col-md-6"
-                    required
+                    
                     ></v-text-field>
 
                     <v-text-field
@@ -73,7 +71,7 @@
                     :rules="numericRules"
                     label="LandLine"
                     class="col-md-6"
-                    required
+                    
                     ></v-text-field>
 
                     <v-text-field
@@ -91,7 +89,7 @@
                     :rules="emailRules"
                     label="Secondary Email"
                     class="col-md-6"
-                    required
+                    
                     ></v-text-field>
 
                     <v-text-field
@@ -116,50 +114,44 @@
 
                     <v-text-field
                     v-model="formData.CorrospondenceAddressStreet1"
-                    :rules="nameRules"
                     label="Street1"
                     class="col-md-6"
-                    required
+                    
                     ></v-text-field>
 
                     <v-text-field
                     v-model="formData.CorrospondenceAddressStreet2"
-                    :rules="nameRules"
                     label="Street2"
                     class="col-md-6"
-                    required
+                    
                     ></v-text-field>
 
                     <v-text-field
                     v-model="formData.CorrospondenceAddressCity"
-                    :rules="nameRules"
                     label="City"
                     class="col-md-6"
-                    required
+                    
                     ></v-text-field>
 
                     <v-text-field
                     v-model="formData.CorrospondenceAddressState"
-                    :rules="nameRules"
                     label="State"
                     class="col-md-6"
-                    required
+                    
                     ></v-text-field>
 
                     <v-text-field
                     v-model="formData.CorrospondenceAddressCountry"
-                    :rules="nameRules"
                     label="Country"
                     class="col-md-6"
-                    required
+                    
                     ></v-text-field>
                     
                     <v-text-field
                     v-model="formData.CorrospondenceAddressZipCode"
-                    :rules="nameRules"
                     label="ZipCode"
                     class="col-md-6"
-                    required
+                    
                     ></v-text-field>
 
                      <!-- <v-checkbox
@@ -173,7 +165,7 @@
                         :rules="nameRules"
                         label="Street1"
                         class="col-md-6"
-                        required
+                        
                         ></v-text-field>
 
                         <v-text-field
@@ -181,7 +173,7 @@
                         :rules="nameRules"
                         label="Street2"
                         class="col-md-6"
-                        required
+                        
                         ></v-text-field>
 
                         <v-text-field
@@ -189,7 +181,7 @@
                         :rules="nameRules"
                         label="City"
                         class="col-md-6"
-                        required
+                        
                         ></v-text-field>
 
                         <v-text-field
@@ -197,7 +189,7 @@
                         :rules="nameRules"
                         label="State"
                         class="col-md-6"
-                        required
+                        
                         ></v-text-field>
 
                         <v-text-field
@@ -205,7 +197,7 @@
                         :rules="nameRules"
                         label="Country"
                         class="col-md-6"
-                        required
+                        
                         ></v-text-field>
 
                         
@@ -214,7 +206,7 @@
                         :rules="nameRules"
                         label="ZipCode"
                         class="col-md-6"
-                        required
+                        
                         ></v-text-field>
                     </div>
                 </div>
@@ -232,50 +224,27 @@
 
                     <v-text-field
                     v-model="formData.PAN"
-                    :rules="nameRules"
                     :counter="10"
                     label="PAN"
                     class="col-md-6"
-                    required
+                    
                     ></v-text-field>
 
                     <v-text-field
                     v-model="formData.Occupation"
-                    :rules="nameRules"
                     :counter="10"
                     label="Occupation"
                     class="col-md-6"
-                    required
+                    
                     ></v-text-field>
 
                     <v-text-field
                     v-model="formData.GrossIncome"
-                    :rules="numericRules"
                     label="Total Income"
                     class="col-md-6"
-                    required
+                    
                     ></v-text-field>
 
-                    <!-- <v-text-field
-                    v-model="formData.NetWorth"
-                    :rules="numericRules"
-                    label="NetWorth"
-                    class="col-md-6"
-                    required
-                    ></v-text-field> -->
-
-                    <!-- <v-checkbox
-                    :label="`GST Registered ?`" class="col-md-12"
-                    v-model="formData.GSTRegistered"
-                    ></v-checkbox>
-
-                    <v-text-field
-                    v-model="formData.GST"
-                    :rules="nameRules"
-                    label="GST"
-                    class="col-md-6"
-                    required
-                    ></v-text-field> -->
                 </div>
           </v-card-text>
         </v-card>
@@ -305,12 +274,12 @@ export default {
       panels: ["Basic", "Address", "Occupation"],
       panel: [true, true, true],
       emailRules: [
-        v => !!v || "E-mail is required",
+        v => !!v || "E-mail is ",
         v => /.+@.+/.test(v) || "E-mail must be valid"
       ],
-      nameRules: [v => !!v || "Field is required"],
+      nameRules: [v => !!v || "Field is "],
       numericRules: [
-        v => !!v || "Field is required",
+        v => !!v || "Field is ",
         v => /^[0-9]*$/.test(v) || "Field must be valid number"
       ],
       valid: false,

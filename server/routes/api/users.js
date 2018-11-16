@@ -7,6 +7,7 @@ const UserProfile = require("../../models/user-profiles");
 const Category = require("../../models/category");
 const isValidUser = require("../../config/validations/userValidation");
 const upload = require("../../config/image-upload");
+const web3Connector = require("../../config/web3Connector");
 
 //POST new user route (optional, everyone has access)
 router.post("/", auth.optional, (req, res, next) => {
@@ -34,9 +35,15 @@ router.post("/", auth.optional, (req, res, next) => {
 
   finalUser.setPassword(user.password);
 
-  return finalUser
-    .save()
-    .then(() => res.json({ user: finalUser.toAuthJSON() }));
+  return finalUser.save().then(user => {
+    let UserId = {
+      UserId: user.id,
+      FirstName: "Test",
+      LastName: "Test"
+    };
+    let userProfile = new UserProfile(UserId);
+    return userProfile.save().then(result => res.json({ result }));
+  });
 });
 
 //POST login route (optional, everyone has access)
@@ -70,11 +77,11 @@ router.post("/login", auth.optional, (req, res, next) => {
       }
 
       if (passportUser) {
-        console.log(passportUser.role)
+        console.log(passportUser.role);
         const user = passportUser;
         user.token = passportUser.generateJWT();
         const role = passportUser.role;
-        return res.json({ user: user.toAuthJSON(), role:role });
+        return res.json({ user: user.toAuthJSON(), role: role });
       }
       return res.status(200).json({
         errors: {
@@ -100,6 +107,36 @@ router.get("/current", auth.required, (req, res, next) => {
   });
 });
 
+router.post("/getBalance", auth.required, async (req, res, next) => {
+  let userInfo = await UserProfile.findOne({UserId:req.body.id}).lean().exec()
+  let balance = await web3Connector.GetUserBalance(userInfo.bAddress)
+  if(balance){
+    return res.json({ balance: balance.c[0] });
+  }else{
+    return res.json({ balance: 0 });
+  }
+});
+
+router.post("/getEthUser", auth.required, async (req, res, next) => {
+  let userInfo = await UserProfile.findOne({UserId:req.body.id}).lean().exec()
+  let user = await web3Connector.GetUser(userInfo.bAddress)
+  if(balance){
+    return res.json({ balance: user });
+  }else{
+    return res.json({ error: "Not Found" });
+  }
+});
+
+router.post("/getBalance", auth.required, async (req, res, next) => {
+  let userInfo = await UserProfile.findOne({UserId:req.body.id}).lean().exec()
+  let balance = await web3Connector.GetUserBalance(userInfo.bAddress)
+  if(balance){
+    return res.json({ balance: balance.c[0] });
+  }else{
+    return res.json({ balance: 0 });
+  }
+});
+
 router.get("/logout", function(req, res) {
   try {
     req.logout();
@@ -123,14 +160,13 @@ router.post(
     try {
       let UserId = req.body.id;
       let _up = await UserProfile.findOne({ UserId: UserId }).exec();
-      
+
       if (!_up) {
-        throw 'User Profile is not set';
+        throw "User Profile is not set";
       } else {
-        return await res.json({ "userProfile": _up });
+        return await res.json({ userProfile: _up });
       }
     } catch (error) {
-      
       return res.status(200).json({
         errors: {
           error: error
@@ -140,41 +176,37 @@ router.post(
   }
 );
 
-router.post(
-  "/saveCategories",
-  auth.required,
-  async (req, res, next) => {
-    try {
-      let cat = new Category(req.body)
-      await cat.save()
-      let _cat = await Category.find().lean().exec();
-      return await res.json({ "Categories": _cat });
-    } catch (error) {
-      return res.status(200).json({
-        errors: {
-          error: error
-        }
-      });
-    }
+router.post("/saveCategories", auth.required, async (req, res, next) => {
+  try {
+    let cat = new Category(req.body);
+    await cat.save();
+    let _cat = await Category.find()
+      .lean()
+      .exec();
+    return await res.json({ Categories: _cat });
+  } catch (error) {
+    return res.status(200).json({
+      errors: {
+        error: error
+      }
+    });
   }
-);
+});
 
-router.get(
-  "/getCategories",
-  auth.required,
-  async (req, res, next) => {
-    try {
-      let _cat = await Category.find().lean().exec();
-      return await res.json({ "Categories": _cat });
-    } catch (error) {
-      return res.status(200).json({
-        errors: {
-          error: error
-        }
-      });
-    }
+router.get("/getCategories", auth.required, async (req, res, next) => {
+  try {
+    let _cat = await Category.find()
+      .lean()
+      .exec();
+    return await res.json({ Categories: _cat });
+  } catch (error) {
+    return res.status(200).json({
+      errors: {
+        error: error
+      }
+    });
   }
-);
+});
 
 router.post(
   "/userProfile",
@@ -187,12 +219,14 @@ router.post(
       if (!_up) {
         req.body.UserId = UserId;
         let userProfile = new UserProfile(req.body);
+        await web3Connector.CreateUser(req.body.bAddress, 1000);
         return await userProfile.save().then(result => res.json({ result }));
       } else {
         const ID = _up._id;
         req.body.UpdatedOn = new Date();
+        await web3Connector.CreateUser(req.body.bAddress, 1000);
         await UserProfile.findOneAndUpdate(
-          {_id:ID},
+          { _id: ID },
           { $set: req.body },
           { new: true }
         ).exec(async (err, result) => {
@@ -201,7 +235,6 @@ router.post(
         });
       }
     } catch (error) {
-      
       return res.status(422).json({
         errors: {
           error: error
@@ -214,8 +247,8 @@ router.post(
 router.post(
   "/userProfileImageUpload",
   auth.required,
-  isValidUser, 
-  upload.single('ProfileImage'),
+  isValidUser,
+  upload.single("ProfileImage"),
   async (req, res, next) => {
     try {
       let UserId = req.payload.id;
@@ -232,7 +265,7 @@ router.post(
         });
       }
     } catch (error) {
-      console.log("dssd" + error)
+      console.log("dssd" + error);
       return res.status(422).json({
         errors: {
           error: error

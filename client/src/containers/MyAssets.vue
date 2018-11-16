@@ -22,6 +22,7 @@
                 <span class="col-md-6" style="margin-bottom:10px"><b>Specification</b> : {{item.Specification}}</span>
                 <span class="col-md-6" style="margin-bottom:10px"><b>FinalPurchasePrice</b>: $ {{item.OwnerShipDetails.FinalPurchasePrice}}</span>
                 <span class="col-md-6" style="margin-bottom:10px"><b>Category</b>: {{item.CategoryName}}</span>
+                <span class="col-md-6" style="margin-bottom:10px"><b>Owner Address</b>: {{item.UserDetails.bAddress}}</span>
                 <!-- <span class="col-md-12">User: {{item.UserDetails.FirstName}}  {{item.UserDetails.LastName}}</span> -->
             </div>
             </v-card-title>

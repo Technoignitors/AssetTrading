@@ -6,7 +6,7 @@ const OrderHistory = require("../../models/orderhistory");
 const AssetOwnership = require("../../models/assetownership");
 const UserProfile = require("../../models/user-profiles");
 const Assets = require("../../models/assets");
-// const AssetLogs = require('../../models/assetlogs');
+const web3Connector = require("../../config/web3Connector");
 
 // To get order history of an user
 router.post(
@@ -103,6 +103,7 @@ router.get(
 router.post("/setOrder", auth.required, isValidUser, async (req, res, next) => {
   try {
     let OrderId = req.body.OrderId;
+    let SKU = ""
     if (OrderId) {
       req.body.UpdatedBy = req.body.userID;
       req.body.UpdatedOn = new Date();
@@ -125,6 +126,7 @@ router.post("/setOrder", auth.required, isValidUser, async (req, res, next) => {
             { new: true }
           ).exec(async (err, result) => {
             console.log(result);
+            SKU = result.SKU
           });
 
           let asset = await AssetOwnership.findOne({
@@ -145,6 +147,23 @@ router.post("/setOrder", auth.required, isValidUser, async (req, res, next) => {
               await console.log("RESULT: " + r);
               //return await res.json({ r });
             });
+            let currentLoggedIN = await UserProfile.findOne({
+              UserId: req.body.userID
+            })
+              .lean()
+              .exec();
+            let currentOwner = await UserProfile.findOne({ UserId: asset.CurrentOwner })
+              .lean()
+              .exec();
+            await web3Connector.CreateOrder(
+              result._id,
+              result.FinalPurchasePrice,
+              2,
+              currentLoggedIN.bAddress, // current logedded in user buyer
+              currentOwner.bAddress, // asset owner user is seller
+              SKU,
+              1321
+            );
           }
         } else {
           let _req = {
