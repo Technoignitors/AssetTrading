@@ -16,7 +16,7 @@
                         <a>{{userData.FirstName}} {{userData.LastName}}</a>
                       </li>
                       
-                      <li>
+                      <li v-if="role !== 'admin'">
                         <a>Balance : <span style="font-weight:bold">{{userData.Mtoken}}</span></a>
                       </li>
                         <li>
@@ -38,7 +38,8 @@ var $ = JQuery;
 export default {
   data:function(){
     return{
-      userData:{}
+      userData:{},
+      role:'user'
     }
   },
   methods: {
@@ -56,8 +57,9 @@ export default {
     }
   },
   mounted: async function() {
+    this.role = sessionStorage.getItem("userRole")
     let response = await PostsService.getUserProfile({
-      id: localStorage.getItem("userID")
+      id: sessionStorage.getItem("userID")
     });
     if (!response.data.errors) {
       this.userData = response.data.userProfile;

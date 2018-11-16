@@ -1,6 +1,7 @@
 <template>
 <div>
-    <div style="padding:10px;" class="col-sm-4" v-for="(item,i) in data" :key="i">
+  <v-progress-linear  v-if="loading" :indeterminate="true"></v-progress-linear>
+    <div style="padding:10px;" class="col-sm-6" v-for="(item,i) in data" :key="i">
         <v-card>
             <v-img
             class="white--text"
@@ -16,19 +17,21 @@
             </v-container>
             </v-img>
             <v-card-title>
-            <div>
-                <span class="col-md-12" style="margin-bottom:10px">Description : {{item.Description}}</span><br>
-                <span class="col-md-12" style="margin-bottom:10px">Specification : {{item.Specification}}</span><br>
-                <span class="col-md-12" style="margin-bottom:10px">FinalPurchasePrice: $ {{item.OwnerShipDetails.FinalPurchasePrice}}</span>
+            <div class="col-md-12">
+                <span class="col-md-6" style="margin-bottom:10px"><b>Description</b> : {{item.Description}}</span>
+                <span class="col-md-6" style="margin-bottom:10px"><b>Specification</b> : {{item.Specification}}</span>
+                <span class="col-md-6" style="margin-bottom:10px"><b>FinalPurchasePrice</b>: $ {{item.OwnerShipDetails.FinalPurchasePrice}}</span>
+                <span class="col-md-6" style="margin-bottom:10px"><b>Category</b>: {{item.CategoryName}}</span>
                 <!-- <span class="col-md-12">User: {{item.UserDetails.FirstName}}  {{item.UserDetails.LastName}}</span> -->
             </div>
             </v-card-title>
             <v-card-actions>
             <!-- <v-btn flat color="orange">Buy</v-btn> -->
-            <v-btn flat color="orange" @click="resell(i)">Delete Asset</v-btn>
+            <v-btn flat color="orange" @click="resell(item._id)">View Asset</v-btn>
             </v-card-actions>
         </v-card>
     </div>
+    <h1 v-if="data.length == 0 && loaded" class="text-center">No Assets Found</h1>
   </div>
 </template>
 
@@ -52,20 +55,25 @@ export default {
         }
       ],
       total:0,
-      data:[]
+      data:[],
+      loaded:false,
+      loading:true
     };
   },
   methods: {
     resell(id) {
-      this.$router.push({ name: "ReSellAsset", params: { id: id } });
+      this.$router.push({ name: "ExploreAsset", params: { id: id } });
     },
     
   },
   mounted: async function() {
-      let response = await PostsService.myAssets({id:localStorage.getItem("userID")});
-      console.log(response)
+      let response = await PostsService.myAssets({id:sessionStorage.getItem("userID")});
+      this.loading = false;
       this.data = response.data.Assets;
       this.total = response.data.Assets.length
+      if(this.total == 0){
+        this.loaded = true;
+      }
       
     }
 };

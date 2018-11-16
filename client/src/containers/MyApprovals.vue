@@ -10,7 +10,7 @@
   >
     <template slot="headers" slot-scope="props">
       <tr>
-        <th
+        <th style="text-align:center"
           v-for="header in props.headers"
           :key="header.text"
           :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
@@ -23,14 +23,15 @@
     </template>
     <template slot="items" slot-scope="props">
       <tr :active="props.selected" @click="props.selected = !props.selected">
-        <td>{{ props.item._id }}</td>
-        <td class="text-xs-right">{{ props.item.AvailDiscount }}</td>
-        <td class="text-xs-right">{{ props.item.FinalPurchasePrice }}</td>
-        <td class="text-xs-right">{{ props.item.FinalPurchasePrice }}</td>
-        <td class="text-xs-right">{{ props.item.FinalPurchasePrice }}</td>
+        <td style="text-align:center">{{ props.item.AssetDetails.SKU }}</td>
+        <td style="text-align:center">{{ props.item.AssetDetails.Name }}</td>
+        <td style="text-align:center">{{ props.item.UserDetails.FirstName }} {{ props.item.UserDetails.LastName }}</td>
+        <td style="text-align:center">{{ props.item.AssetDetails.Description }}</td>
+        <td style="text-align:center">{{ props.item.FinalPurchasePrice }}</td>
+        <td style="text-align:center">{{ props.item.CreatedOn | formatDate}}</td>
         <td>
-            <button class="btn btn-sm btn-success" @click="approveOrder(props.item._id, props.item.AssetID)">Approve</button>&nbsp;&nbsp;
-            <button class="btn btn-sm btn-danger" @click="rejectOrder(props.item._id)">Reject</button>
+            <button class="btn btn-sm btn-success" @click="approveOrder(props.item._id, props.item.AssetID, 'approve')">Approve</button>&nbsp;&nbsp;
+            <button class="btn btn-sm btn-danger" @click="approveOrder(props.item._id, props.item.AssetID, 'reject')">Reject</button>
         </td>
       </tr>
     </template>
@@ -45,15 +46,19 @@ export default {
     },
     selected: [],
     headers: [
-      {
-        text: "Asset Name",
-        value: "AvailDiscount"
+       {
+        text: "SKU",
+        value: "_id"
       },
-      { text: "Avail Discount", value: "AvailDiscount" },
-      { text: "Final Purchase Price", value: "FinalPurchasePrice" },
-      { text: "Discount Percentage", value: "DiscountPercentage" },
-      { text: "Discouned Amount", value: "DiscounedAmount" },
-      { text: "Status", value: "Status" }
+       {
+        text: "Name",
+        value: "_id"
+      },
+      { text: "Current Owner", value: "UserDetails.FirstName" },
+      { text: "Description", value: "Description" },
+      { text: "Price (Ç)", value: "FinalPurchasePrice" },
+      { text: "Created", value: "CreatedOn" },
+      { text: "Actions", value: "Status" }
     ],
     tableData: []
   }),
@@ -71,22 +76,16 @@ export default {
         this.pagination.descending = false;
       }
     },
-    async approveOrder(id,AssetID) {
-      console.log(id);
+    async approveOrder(id, AssetID, type) {
       var request = {
-        userID: localStorage.getItem("userID"),
+        userID: sessionStorage.getItem("userID"),
         OrderId: id,
-        Status: "Completed",
-        AssetID:AssetID
+        Status: type == 'approve'?"Completed":"Rejected",
+        AssetID: AssetID
       };
       let response = await PostsService.setOrder(request);
-      if (!response.data.errors) {
-         console.log(response);
-         //this.$router.push({ name: "Orders" });
-      } else {
-        console.log(response);
-        //this.$router.push({ name: "Orders" });
-      }
+      let response1 = await PostsService.getAllPendingOrder();
+      this.tableData = response1.data.Orders;
     },
     rejectOrder(id) {
       console.log(id);
@@ -95,7 +94,6 @@ export default {
   mounted: async function() {
     let response = await PostsService.getAllPendingOrder();
     this.tableData = response.data.Orders;
-    //this.total = this.tableData.length;
   }
 };
 </script>

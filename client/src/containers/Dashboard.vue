@@ -1,16 +1,6 @@
 <template>
 <div style="padding:10px;">
-  <!-- <v-carousel
-    delimiter-icon="stop"
-    prev-icon="mdi-arrow-left"
-    next-icon="mdi-arrow-right"
-  >
-    <v-carousel-item
-      v-for="(item,i) in items"
-      :key="i"
-      :src="item.src"
-    ></v-carousel-item>
-  </v-carousel> -->
+     <v-progress-linear  v-if="loading" :indeterminate="true"></v-progress-linear>
     <div style="padding:10px;" class="col-sm-6" v-for="(item,i) in data" :key="i">
          <v-card>
             <v-img
@@ -27,21 +17,27 @@
             </v-container>
             </v-img>
             <v-card-title>
-            <div>
-                <span class="col-md-12" style="margin-bottom:10px">Description : {{item.Description}}</span><br>
-                <span class="col-md-12" style="margin-bottom:10px">Specification : {{item.Specification}}</span><br>
-                <span class="col-md-12" style="margin-bottom:10px">Price: $ {{item.OwnerShipDetails.FinalPurchasePrice}}</span>
-                <span class="col-md-12" style="margin-bottom:10px">Seller: {{item.UserDetails.FirstName}}  {{item.UserDetails.LastName}}</span>
+            <div class="col-md-12" style="padding:0;">
+                <span class="col-md-6" style="margin-bottom:10px"><b>Description</b> : {{item.Description}}</span>
+                <span class="col-md-6" style="margin-bottom:10px"><b>Specification</b> : {{item.Specification}}</span>
+                <span class="col-md-6" style="margin-bottom:10px"><b>Price</b>: Ç {{item.OwnerShipDetails.FinalPurchasePrice}}</span>
+                <span class="col-md-6" style="margin-bottom:10px"><b>Seller</b>: {{item.UserDetails.FirstName}}  {{item.UserDetails.LastName}}</span>
+                <span class="col-md-6" style="margin-bottom:10px"><b>Category</b>: {{item.CategoryName}}</span>
             </div>
             </v-card-title>
             <v-card-actions>
             <!-- <v-btn flat color="orange">Buy</v-btn> -->
-            <v-btn flat color="orange" @click="exploreItem(item._id)">Buy Asset</v-btn>
+            <v-btn flat color="purple" v-if="role !== 'admin'" @click="exploreItem(item._id)">Buy Asset</v-btn>
+            <v-btn flat color="purple" v-if="role === 'admin'" @click="viewItem(item._id)">View Asset</v-btn>
             </v-card-actions>
         </v-card>
     </div>
+    <h1 v-if="data.length == 0 && loaded" class="text-center">No Assets Found</h1>
   </div>
+
 </template>
+
+
 
 <script>
 import PostsService from "@/services/PostsService";
@@ -63,26 +59,36 @@ export default {
         }
       ],
       total: 0,
-      data: []
+      data: [],
+      loaded: false,
+      loading: true,
+      role:""
     };
   },
   methods: {
     exploreItem(id) {
       this.$router.push({ name: "ExploreAsset", params: { id: id } });
+    },
+    viewItem(id) {
+      this.$router.push({ name: "ExploreAsset", params: { id: id } });
     }
   },
   mounted: async function() {
-    let role = localStorage.getItem("userID");
+    this.role = sessionStorage.getItem("userRole");
     let response;
-    if (role != "admin") {
+    if (this.role != "admin") {
       response = await PostsService.getDashboardAssets({
-        id: localStorage.getItem("userID")
+        id: sessionStorage.getItem("userID")
       });
     } else {
       response = await PostsService.getAllAssets();
     }
+    this.loading = false;
     this.data = response.data.Assets;
     this.total = response.data.Assets.length;
+    if (this.total == 0) {
+      this.loaded = true;
+    }
   }
 };
 </script>

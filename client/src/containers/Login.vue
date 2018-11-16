@@ -77,9 +77,9 @@ export default {
         }
       });
       if (!response.data.errors) {
-        localStorage.setItem('token', response.data.user.token);
-        localStorage.setItem('userID', response.data.user._id);
-        localStorage.setItem('userRole', response.data.role);
+        sessionStorage.setItem('token', response.data.user.token);
+        sessionStorage.setItem('userID', response.data.user._id);
+        sessionStorage.setItem('userRole', response.data.role);
         this.$router.push({ name: "Dashboard" });
       } else {
         this.error = response.data.errors.error;
