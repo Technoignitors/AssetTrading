@@ -1,5 +1,6 @@
 <template>
   <div class="" style="padding:10px">
+     <v-progress-linear  v-if="loading" :indeterminate="true"></v-progress-linear>
    <v-form ref="form" v-model="valid" lazy-validation>
     <v-expansion-panel
       v-model="panel"
@@ -287,15 +288,22 @@
     >
       submit
     </v-btn>
-    <v-btn @click="clear">clear</v-btn>
+    <!-- <v-btn @click="clear">clear</v-btn> -->
+    <app-Notifications :show="showNotification" :messege="notificationMessage" ></app-Notifications>
+   
   </div>
 </template>
 <script>
 import PostsService from "@/services/PostsService";
+import Notifications from "@/components/Notifications";
 export default {
+  components: {
+    "app-Notifications": Notifications
+  },
   data: function() {
     return {
       panels: ["Basic", "Address", "Occupation"],
+      panel: [true, true, true],
       emailRules: [
         v => !!v || "E-mail is required",
         v => /.+@.+/.test(v) || "E-mail must be valid"
@@ -339,7 +347,10 @@ export default {
         GST: "",
         Mtoken: "",
         SameAsCorrospondence: true
-      }
+      },
+      loading:true,
+      showNotification: false,
+      notificationMessage: ""
     };
   },
   computed: {
@@ -352,12 +363,16 @@ export default {
       if (this.$refs.form.validate()) {
         await PostsService.setUserProfile(this.Form);
         let response = await PostsService.getUserProfile({
-          id: localStorage.getItem("userID")
+          id: sessionStorage.getItem("userID")
         });
         if (!response.data.errors) {
           this.formData = response.data.userProfile;
+           this.showNotification = true;
+          this.notificationMessage = "Profile Updated Successfully";
         } else {
           console.log(response);
+          this.showNotification = true;
+          this.notificationMessage = response.data.errors.error;
         }
       }
     },
@@ -367,12 +382,15 @@ export default {
   },
   mounted: async function() {
     let response = await PostsService.getUserProfile({
-      id: localStorage.getItem("userID")
+      id: sessionStorage.getItem("userID")
     });
+    this.loading = false;
     if (!response.data.errors) {
       this.formData = response.data.userProfile;
+     
     } else {
       console.log(response);
+      
       //alert(response.data.errors.error);
     }
   }

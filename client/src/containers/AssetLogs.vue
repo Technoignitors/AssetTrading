@@ -4,6 +4,7 @@
     :headers="headers"
     :items="tableData"
     :pagination.sync="pagination"
+    
     item-key="name"
     class="elevation-1"
   >
@@ -22,13 +23,15 @@
     </template>
     <template slot="items" slot-scope="props">
       <tr :active="props.selected" @click="props.selected = !props.selected">
-        <td style="text-align:center">{{ props.item.AssetDetails.SKU }}</td>
-        <td style="text-align:center">{{ props.item.AssetDetails.Name }}</td>
+        <td style="text-align:center">{{ props.item.SKU }}</td>
+        <td style="text-align:center">{{ props.item.Name }}</td>
+        <td style="text-align:center">{{ props.item.Description }}</td>
+        <td style="text-align:center">{{ props.item.OwnerShipDetails.FinalPurchasePrice }}</td>
         <td style="text-align:center">{{ props.item.UserDetails.FirstName }} {{ props.item.UserDetails.LastName }}</td>
-        <td style="text-align:center">{{ props.item.AssetDetails.Description }}</td>
-        <td style="text-align:center">{{ props.item.FinalPurchasePrice }}</td>
-        <td style="text-align:center">{{ props.item.CreatedOn | formatDate}}</td>
-        <td style="text-align:center">{{ props.item.Status }}</td>
+         <td style="text-align:center">{{ props.item.CreatedOn | formatDate}}</td>
+        <td>
+            <button class="btn btn-sm btn-success" @click="viewHistory(props.item._id)">View History</button>&nbsp;&nbsp;
+        </td>
       </tr>
     </template>
   </v-data-table>
@@ -46,15 +49,15 @@ export default {
         text: "SKU",
         value: "_id"
       },
-       {
+      {
         text: "Name",
         value: "_id"
       },
-      { text: "Current Owner", value: "UserDetails.FirstName" },
       { text: "Description", value: "Description" },
-      { text: "Price(Ç)", value: "FinalPurchasePrice" },
+      { text: "Price (Ç)", value: "FinalPurchasePrice" },
+      { text: "Owner", value: "Owner" },
       { text: "Created", value: "CreatedOn" },
-      { text: "Status", value: "Status" }
+      { text: "Actions", value: "Status" }
     ],
     tableData: []
   }),
@@ -62,7 +65,7 @@ export default {
   methods: {
     toggleAll() {
       if (this.selected.length) this.selected = [];
-      else this.selected = this.tableData.slice();
+      else this.selected = this.desserts.slice();
     },
     changeSort(column) {
       if (this.pagination.sortBy === column) {
@@ -71,14 +74,14 @@ export default {
         this.pagination.sortBy = column;
         this.pagination.descending = false;
       }
+    },
+    viewHistory(id){
+      console.log(id)
     }
   },
   mounted: async function() {
-    let response = await PostsService.getOrderHistory({
-      userID: sessionStorage.getItem("userID")
-    });
-    this.tableData = response.data.Orders;
-    //this.total = this.tableData.length;
+    let response = await PostsService.getAllAssets();
+    this.tableData = response.data.Assets;
   }
 };
 </script>

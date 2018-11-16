@@ -21,9 +21,16 @@ router.post(
 
       let Owners = {};
       let userDetails = {};
+      let assetDetails = {};
       for (let index = 0; index < orderHistory.length; index++) {
         Owners = await AssetOwnership.find({
           AssetID: orderHistory[index].AssetID
+        })
+          .lean()
+          .exec();
+
+        assetDetails = await Assets.find({
+          _id: orderHistory[index].AssetID
         })
           .lean()
           .exec();
@@ -34,6 +41,7 @@ router.post(
           .exec();
         orderHistory[index].UserDetails = userDetails[0];
         orderHistory[index].OwnerShipDetails = Owners[0];
+        orderHistory[index].AssetDetails = assetDetails[0];
       }
       return await res.json({ Orders: orderHistory });
     } catch (error) {
@@ -58,6 +66,7 @@ router.get(
 
       let Owners = {};
       let userDetails = {};
+      let assetDetails = {};
       for (let index = 0; index < orderHistory.length; index++) {
         Owners = await AssetOwnership.find({
           AssetID: orderHistory[index].AssetID
@@ -65,12 +74,19 @@ router.get(
           .lean()
           .exec();
         userDetails = await UserProfile.find({
-          UserId: req.body.userID
+          UserId: orderHistory[index].UserID
+        })
+          .lean()
+          .exec();
+
+        assetDetails = await Assets.find({
+          _id: orderHistory[index].AssetID
         })
           .lean()
           .exec();
         orderHistory[index].UserDetails = userDetails[0];
         orderHistory[index].OwnerShipDetails = Owners[0];
+        orderHistory[index].AssetDetails = assetDetails[0];
       }
       return await res.json({ Orders: orderHistory });
     } catch (error) {
@@ -130,6 +146,20 @@ router.post("/setOrder", auth.required, isValidUser, async (req, res, next) => {
               //return await res.json({ r });
             });
           }
+        } else {
+          let _req = {
+            CurrentOwner: result.UserID,
+            UpdatedOn: new Date(),
+            UpdatedBy: req.body.userID
+          };
+
+          await Assets.findOneAndUpdate(
+            { _id: req.body.AssetID },
+            { $set: _req },
+            { new: true }
+          ).exec(async (err, result) => {
+            console.log(result);
+          });
         }
 
         return await res.json({ result });

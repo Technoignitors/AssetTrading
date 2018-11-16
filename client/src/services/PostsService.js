@@ -2,7 +2,7 @@ import Api from '../services/Api';
 const header = {
   headers: {
     'Content-Type': 'application/json',
-    Authorization: `Token ${localStorage.getItem('token')}`
+    Authorization: `Token ${sessionStorage.getItem('token')}`
   }
 };
 
@@ -59,7 +59,7 @@ export default {
     return Api().post('orders/getOrderHistory', data, header)
   },
   getAllAssets () {
-    return Api().get('orders/getAllAssets', header)
+    return Api().get('assets/getAllAssets', header)
   },
   getAllPendingOrder () {
     return Api().get('orders/getAllPendingOrder', header)

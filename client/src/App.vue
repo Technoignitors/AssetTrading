@@ -35,6 +35,13 @@ export default {
         return true;
       }
     }
+  },
+  mounted(){
+    console.log("Dsds", sessionStorage.getItem("token"));
+    if(!sessionStorage.getItem("token")){
+      this.$router.push({ name: "Login", });
+    }
+
   }
 }
 </script>

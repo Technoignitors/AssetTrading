@@ -1,5 +1,6 @@
 <template>
   <div class="" style="padding:10px">
+    <v-progress-linear  v-if="loading" :indeterminate="true"></v-progress-linear>
    <v-form ref="form" v-model="valid" lazy-validation>
     <v-expansion-panel
       v-model="panel"
@@ -48,7 +49,6 @@
                     class="col-md-6"
                     required
                     ></v-textarea>
-
                     <v-select
                       class="col-md-6"
                       :items="categories"
@@ -80,7 +80,7 @@
                     required
                     ></v-text-field> -->
 
-                    <b-form-file v-model="file" :state="Boolean(file)" multiple class="col-md-6" placeholder="Choose a file..."></b-form-file>
+                    <!-- <b-form-file v-model="file" :state="Boolean(file)" multiple class="col-md-6" placeholder="Choose a file..."></b-form-file> -->
                     <input type="file" @change="uploadImage" name="image" id="image"  accept="image/*" multiple >
                     <!-- <b-form-file v-model="file" :state="Boolean(file)" multiple class="col-md-6" placeholder="Choose a file..."></b-form-file> -->
                     <!-- <b-form-file v-model="file" class="mt-3" plain></b-form-file> -->
@@ -167,7 +167,7 @@ export default {
   data: function() {
     return {
       panels: ["Basic", "Images"],
-      panel: [],
+      panel: [true, true],
       emailRules: [
         v => !!v || "E-mail is required",
         v => /.+@.+/.test(v) || "E-mail must be valid"
@@ -186,7 +186,6 @@ export default {
       notificationMessage: "",
       formData: {
         SKU: "",
-        Category: "",
         Name: "",
         Description: "",
         Specification: "",
@@ -195,9 +194,10 @@ export default {
         DiscounedAmount: "",
         AssetPrice: "",
         FinalPurchasePrice: "",
-        Category: "5bd94c5aabef9e4d544ffc11"
+        Category: ""
       },
-      images : []
+      images : [],
+      loading:false
     };
   },
   computed: {
@@ -209,13 +209,15 @@ export default {
     async submit() {
       this.showNotification = false;
       if (this.$refs.form.validate()) {
+        this.loading = true;
         let request = this.Form;
-        request.id = localStorage.getItem("userID")
+        request.id = sessionStorage.getItem("userID")
         let response = await PostsService.uploadAsset(request);
         let fd= new FormData()
         fd.append("Id", response.data.result._id);
         fd.append('Images', this.images)
         //let categories = await PostsService.uploadAssetImages(fd);
+        this.loading = false;
         if (response.data.error) {
           this.showNotification = true;
           this.notificationMessage = response.data.error;

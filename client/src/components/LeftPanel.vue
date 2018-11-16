@@ -13,7 +13,7 @@
                         <p>Dashboard</p>
                     </a>
                 </router-link>
-                <router-link to="/profile" tag="li" exact active-class="active" ><a>
+                <router-link to="/profile" tag="li" exact active-class="active" v-if="userRole != 'admin'"><a>
                         <i class="pe-7s-user"></i>
                         <p>Profile</p>
                     </a>
@@ -33,7 +33,7 @@
                         <p>My Approvals</p>
                     </a>
                 </router-link>
-                <router-link to="/assetlog" tag="li" exact active-class="active" v-if="userRole == 'admin'"><a>
+                <router-link to="/assetLogs" tag="li" exact active-class="active" v-if="userRole == 'admin'"><a>
                         <i class="pe-7s-news-paper"></i>
                         <p>Asset History</p>
                     </a>
@@ -43,7 +43,7 @@
                         <p>Add Asset</p>
                     </a>
                 </router-link>
-                 <router-link to="/profile" tag="li" exact class="active-pro" v-if="userRole == 'admin'"><a>
+                 <router-link to="/profile" tag="li" exact class="active-pro"><a>
                         <i class="pe-7s-news-paper"></i>
                         <p>Upgrade to PRO</p>
                     </a>
@@ -59,7 +59,7 @@
 export default {
     data: function(){
         return {
-            userRole: localStorage.getItem('userRole')
+            userRole: sessionStorage.getItem('userRole')
         }
     }
 }

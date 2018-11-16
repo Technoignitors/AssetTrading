@@ -9,7 +9,7 @@ import MyAssets from '../containers/MyAssets.vue'
 import ExploreAsset from '../containers/ExploreAsset.vue'
 import OrderConfirmation from '../containers/OrderConfirmation.vue'
 import MyApprovals from '../containers/MyApprovals.vue'
-import ReSellAsset from '../containers/ReSellAsset.vue'
+import AssetLogs from '../containers/AssetLogs.vue'
 
 Vue.use(Router)
 
@@ -46,9 +46,9 @@ export default new Router({
       component: ExploreAsset
     },
     {
-      path: '/resellasset/:id',
+      path: '/assetLogs',
       name: 'ReSellAsset',
-      component: ReSellAsset
+      component: AssetLogs
     },
     {
       path: '/orderconfirmation/:id',

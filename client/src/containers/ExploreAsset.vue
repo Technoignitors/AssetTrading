@@ -1,5 +1,5 @@
 <template>
-    <v-card  class="col-sm-12" style="padding:10px;">
+    <v-card  class="col-sm-7 col-md-offset-2" style="padding:10px;">
            <v-img
             class="white--text"
             height="200px"
@@ -14,18 +14,58 @@
             </v-container>
             </v-img>
             <v-card-title>
-            <div>
-                <span class="col-md-12" style="margin-bottom:10px">Description : {{data.Description}}</span><br>
-                <span class="col-md-12" style="margin-bottom:10px">Specification : {{data.Specification}}</span><br>
-                <span class="col-md-12" style="margin-bottom:10px">Price: $ {{data.OwnerShipDetails.FinalPurchasePrice}}</span>
-                <span class="col-md-12" style="margin-bottom:10px">Seller: {{data.UserDetails.FirstName}}  {{data.UserDetails.LastName}}</span>
+            <div class="col-md-12" style="padding:0;">
+                <span class="col-md-6" style="margin-bottom:10px"><b>Description</b> : {{data.Description}}</span>
+                <span class="col-md-6" style="margin-bottom:10px"><b>Specification</b> : {{data.Specification}}</span>
+                <span class="col-md-6" style="margin-bottom:10px"><b>Price</b>: Ç {{data.OwnerShipDetails.FinalPurchasePrice}}</span>
+                <span class="col-md-6" style="margin-bottom:10px"><b>Seller</b>: {{data.UserDetails.FirstName}}  {{data.UserDetails.LastName}}</span>
+                <span class="col-md-6" style="margin-bottom:10px"><b>Category</b>: {{data.CategoryName}}</span>
             </div>
             </v-card-title>
             <v-card-actions>
             <!-- <v-btn flat color="orange">Buy</v-btn> -->
-            <v-btn flat color="orange" @click="buyItem(data._id)">Buy Asset</v-btn>
+            <!-- <v-btn flat color="purple" v-if="showBtn" @click="buyItem(data._id)">Confirm</v-btn> -->
             </v-card-actions>
+             <v-dialog
+      v-model="dialog"
+      width="500"
+    >
+      <v-btn  v-if="showBtn"
+        slot="activator"
+        color="red lighten-2"
+        dark
+      >
+        Confirm
+      </v-btn>
+
+      <v-card>
+        <v-card-title
+          class="headline grey lighten-2"
+          primary-title
+        >
+          Are you sure?
+        </v-card-title>
+
+        <v-card-text>
+           <span>Are you sure want to proceed further? <b> {{data.OwnerShipDetails.FinalPurchasePrice}} </b> Token From your wallet will be deducted once transaction complets ?</span><br>
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            flat
+            @click="dialog = false;confirmOrder()"
+          >
+            I accept
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
         </v-card>
+        
 </template>
 
 <script>
@@ -33,43 +73,10 @@ import PostsService from "@/services/PostsService";
 export default {
   data: function() {
     return {
-      assetDetails: {
-        _id: {
-          $oid: "5bd95da75c0694198c047b66"
-        },
-        CreatedOn: {
-          $date: "2018-10-31T07:45:22.080Z"
-        },
-        UpdatedOn: {
-          $date: "2018-10-31T07:45:22.080Z"
-        },
-        SKU: "Test",
-        Category: {
-          $oid: "5bd94c5aabef9e4d544ffc11"
-        },
-        Name: "test",
-        Description: "12-12-1989",
-        Specification: "test",
-        UploadedBy: {
-          $oid: "5bd2ad37cf8c475c686409b1"
-        },
-        CurrentOwner: {
-          $oid: "5bd2ad37cf8c475c686409b1"
-        },
-        CreatedBy: {
-          $oid: "5bd2ad37cf8c475c686409b1"
-        },
-        UpdatedBy: {
-          $oid: "5bd2ad37cf8c475c686409b1"
-        },
-        Reviews: [],
-        Rating: [],
-        Queries: [],
-        Documents: [],
-        Images: [],
-        __v: 0
-      },
-      data:{}
+      assetDetails: {},
+      data: {},
+      showBtn: true,
+      dialog: false
     };
   },
   methods: {
@@ -78,14 +85,35 @@ export default {
         name: "OrderConfirmation",
         params: { assetId: this.$route.params.id }
       });
+    },
+    async confirmOrder() {
+      //this.$router.push({ name: "Orders" });
+      var request = {
+        userID: sessionStorage.getItem("userID"),
+        AssetID: this.$route.params.id,
+        Status: "Pending",
+        FinalPurchasePrice: this.data.OwnerShipDetails.FinalPurchasePrice,
+        DiscountPercentage: 0,
+        DiscounedAmount: 0
+      };
+      let response = await PostsService.setOrder(request);
+      this.loading = true;
+      if (!response.data.errors) {
+        console.log(response);
+        this.$router.push({ name: "Orders" });
+      } else {
+        console.log(response);
+        this.$router.push({ name: "Orders" });
+      }
     }
   },
-  mounted: async function() {
-   
+  created: async function() {
     let response = await PostsService.getAssetDetails({
       id: this.$route.params.id
     });
-     console.log(response)
+    if (sessionStorage.getItem("userID") === response.data.Assets.CurrentOwner || sessionStorage.getItem("userRole") == 'admin') {
+      this.showBtn = false;
+    }
     this.data = response.data.Assets;
     this.total = response.data.Assets.length;
   }

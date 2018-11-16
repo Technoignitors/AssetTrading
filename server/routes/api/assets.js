@@ -6,6 +6,7 @@ const UserProfile = mongoose.model("UserProfile");
 const Asset = require("../../models/assets");
 const AssetOwnership = require("../../models/assetownership");
 const AssetLogs = require("../../models/assetLogs");
+const Category = require("../../models/category");
 const isValidUser = require("../../config/validations/userValidation");
 const upload = require("../../config/image-upload");
 
@@ -84,6 +85,12 @@ router.post("/myAssets", auth.required, async (req, res, next) => {
     let Owners = {};
     let userDetails = {};
     for (let index = 0; index < assets.length; index++) {
+      let category = await Category.find({
+        _id: assets[index].Category
+      })
+        .lean()
+        .exec();
+      assets[index].CategoryName = category[0].Name
       Owners = await AssetOwnership.find({ AssetID: assets[index]._id })
         .lean()
         .exec();
@@ -114,7 +121,12 @@ router.post("/getDashboardAssets", auth.required, async (req, res, next) => {
       .exec();
     let Owners = {};
     let userDetails = {};
+
     for (let index = 0; index < assets.length; index++) {
+      let category = await Category.find({
+        _id: assets[index].Category
+      });
+      assets[index].CategoryName = category[0].Name;
       Owners = await AssetOwnership.find({ AssetID: assets[index]._id })
         .lean()
         .exec();
@@ -145,6 +157,10 @@ router.get("/getAllAssets", auth.required, async (req, res, next) => {
     let Owners = {};
     let userDetails = {};
     for (let index = 0; index < assets.length; index++) {
+      let category = await Category.find({
+        _id: assets[index].Category
+      });
+      assets[index].CategoryName = category[0].Name;
       Owners = await AssetOwnership.find({ AssetID: assets[index]._id })
         .lean()
         .exec();
@@ -153,8 +169,8 @@ router.get("/getAllAssets", auth.required, async (req, res, next) => {
       })
         .lean()
         .exec();
-      assets[index].UserDetails = userDetails;
-      assets[index].OwnerShipDetails = Owners;
+      assets[index].UserDetails = userDetails[0];
+      assets[index].OwnerShipDetails = Owners[0];
     }
 
     return await res.json({ Assets: assets });
@@ -174,6 +190,12 @@ router.post("/getAssetDetails", auth.required, async (req, res, next) => {
       .exec();
     let Owners = {};
     let userDetails = {};
+    let category = await Category.find({
+      _id: assets.Category
+    })
+      .lean()
+      .exec();
+    assets.CategoryName = category[0].Name;
     Owners = await AssetOwnership.find({ AssetID: assets._id })
       .lean()
       .exec();

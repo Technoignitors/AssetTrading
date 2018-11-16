@@ -28,4 +28,4 @@ const AssetLogsSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model("AssetLogs", AssetLogsSchema);
+module.exports = mongoose.model("AssetLog", AssetLogsSchema);

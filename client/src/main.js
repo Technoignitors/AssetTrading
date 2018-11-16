@@ -5,9 +5,11 @@ import App from './App'
 import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import Vuetify from 'vuetify'
+import moment from 'moment'
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.use(Vuetify)
+
 
 /* eslint-disable no-new */
 new Vue({
@@ -15,4 +17,10 @@ new Vue({
   router,
   components: { App },
   template: '<App/>'
+})
+
+Vue.filter('formatDate', function (value) {
+  if (value) {
+    return moment(String(value)).format('MM/DD/YYYY')
+  }
 })
