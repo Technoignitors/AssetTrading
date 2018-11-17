@@ -65,7 +65,7 @@ contract UserContract{
 contract TradeContract is AssetContract, UserContract{
     struct Order{
         uint16 orderId;
-        uint256 orderAmount;
+        uint16 orderAmount;
         //uint8 orderStatus;
         address buyer;
         address seller;
@@ -95,21 +95,20 @@ contract TradeContract is AssetContract, UserContract{
         
     }*/
     
-    
     event CreateOrder(uint16 _orderId,uint _orderAmount, address buyer, address seller, uint16 _sku);
     
-    function GetOrder(uint16 _orderId) constant public returns(uint256 _orderAmount, address buyer, address seller, uint16 _sku){
+    function GetOrder(uint16 _orderId) constant public returns(uint16 _orderAmount, address buyer, address seller, uint16 _sku){
         Order storage order= orders[_orderId];
         return (order.orderAmount, order.buyer, order.seller, order.sku);
     }
 
-    function GenerateOrder(uint16 _orderId,uint256 _orderAmount, address _buyer, address _seller, uint16 _sku ) payable public{
+    function GenerateOrder(uint16 _orderId,uint16 _orderAmount, address _buyer, address _seller, uint16 _sku ) payable public{
         orders[_orderId] = Order({orderId:_orderId,orderAmount:_orderAmount, buyer:_buyer, seller:_seller, sku:_sku});
         users[_buyer].userBalance-=_orderAmount;
         users[_seller].userBalance+=_orderAmount;
         
-        TransferAssetOwner(_buyer,_seller,_sku);
-        CreateOrder(_orderId,_orderAmount, _buyer, _seller, _sku);
+        //TransferAssetOwner(_buyer,_seller,_sku);
+        //CreateOrder(_orderId,_orderAmount, _buyer, _seller, _sku);
         
     }        
 }
