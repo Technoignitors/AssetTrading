@@ -107,7 +107,7 @@ contract TradeContract is AssetContract, UserContract{
         users[_buyer].userBalance-=_orderAmount;
         users[_seller].userBalance+=_orderAmount;
         
-        //TransferAssetOwner(_buyer,_seller,_sku);
+        TransferAssetOwner(_buyer,_seller,_sku);
         //CreateOrder(_orderId,_orderAmount, _buyer, _seller, _sku);
         
     }        

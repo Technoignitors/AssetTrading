@@ -16,7 +16,7 @@
                         <a>{{firstName}} {{lastName}}</a>
                       </li>
                       
-                      <li v-if="role !== 'admin'">
+                      <li v-if="role !== 'admin'" style="margin-top: 7px;">
                         <!-- <a>Balance : <span style="font-weight:bold">{{Balance}}</span></a> -->
                          <v-chip v-if="Balance">Balance: {{Balance}}</v-chip>
                         <!-- <v-badge left>

@@ -13,6 +13,7 @@ var tradecontractContract = web3.eth.contract([{"constant":false,"inputs":[{"nam
 
 
 
+
 var tradeContract = tradecontractContract.at(contractAddress);
 
 /*---------------Functions---------------------*/

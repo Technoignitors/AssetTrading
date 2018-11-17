@@ -157,8 +157,8 @@ router.post("/setOrder", auth.required, isValidUser, async (req, res, next) => {
             await web3Connector.CreateOrder(
               result.BOrderID,
               result.FinalPurchasePrice,
-              _seller, // asset owner user is seller,
               _buyer, // current logedded in user buyer
+              _seller, // asset owner user is seller,
               SKU
             );
           }
