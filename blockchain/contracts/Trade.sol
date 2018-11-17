@@ -102,7 +102,7 @@ contract TradeContract is AssetContract, UserContract{
         return (order.orderAmount, order.buyer, order.seller, order.sku);
     }
 
-    function GenerateOrder(uint16 _orderId,uint16 _orderAmount, address _buyer, address _seller, uint16 _sku ) payable public{
+    function GenerateOrder(uint16 _orderId,uint16 _orderAmount, address _buyer, address _seller, uint16 _sku ) public{
         orders[_orderId] = Order({orderId:_orderId,orderAmount:_orderAmount, buyer:_buyer, seller:_seller, sku:_sku});
         users[_buyer].userBalance-=_orderAmount;
         users[_seller].userBalance+=_orderAmount;
