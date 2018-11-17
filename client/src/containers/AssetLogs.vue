@@ -27,7 +27,6 @@
         <td style="text-align:center">{{ props.item.Name }}</td>
         <td style="text-align:center">{{ props.item.Description }}</td>
         <td style="text-align:center">{{ props.item.OwnerShipDetails.FinalPurchasePrice }}</td>
-        <td style="text-align:center">{{ props.item.UserDetails.FirstName }} {{ props.item.UserDetails.LastName }}</td>
          <td style="text-align:center">{{ props.item.CreatedOn | formatDate}}</td>
         <td>
             <button class="btn btn-sm btn-success" @click="viewHistory(props.item._id)">View History</button>&nbsp;&nbsp;
@@ -55,7 +54,6 @@ export default {
       },
       { text: "Description", value: "Description" },
       { text: "Price (Ç)", value: "FinalPurchasePrice" },
-      { text: "Owner", value: "Owner" },
       { text: "Created", value: "CreatedOn" },
       { text: "Actions", value: "Status" }
     ],

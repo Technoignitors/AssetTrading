@@ -24,7 +24,6 @@
       <tr :active="props.selected" @click="props.selected = !props.selected">
         <td style="text-align:center">{{ props.item.AssetDetails.SKU }}</td>
         <td style="text-align:center">{{ props.item.AssetDetails.Name }}</td>
-        <td style="text-align:center">{{ props.item.UserDetails.FirstName }} {{ props.item.UserDetails.LastName }}</td>
         <td style="text-align:center">{{ props.item.AssetDetails.Description }}</td>
         <td style="text-align:center">{{ props.item.FinalPurchasePrice }}</td>
         <td style="text-align:center">{{ props.item.CreatedOn | formatDate}}</td>
@@ -50,7 +49,6 @@ export default {
         text: "Name",
         value: "_id"
       },
-      { text: "Current Owner", value: "UserDetails.FirstName" },
       { text: "Description", value: "Description" },
       { text: "Price(Ç)", value: "FinalPurchasePrice" },
       { text: "Created", value: "CreatedOn" },

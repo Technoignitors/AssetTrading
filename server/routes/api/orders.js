@@ -135,6 +135,8 @@ router.post("/setOrder", auth.required, isValidUser, async (req, res, next) => {
             .lean()
             .exec();
           if (asset) {
+            let _seller  = asset.CurrentOwner;
+            let _buyer  =  req.body.UserID;
             asset.PreviousOwner = asset.CurrentOwner;
             asset.CurrentOwner = result.CreatedBy;
             (asset.UpdatedOn = new Date()), (asset.UpdatedBy = req.body.userID);
@@ -147,22 +149,20 @@ router.post("/setOrder", auth.required, isValidUser, async (req, res, next) => {
               await console.log("RESULT: " + r);
               //return await res.json({ r });
             });
-            let currentLoggedIN = await UserProfile.findOne({
-              UserId: asset.PreviousOwner
+            let sellerData = await UserProfile.findOne({
+              UserId: _seller
             })
               .lean()
               .exec();
-            let currentOwner = await UserProfile.findOne({ UserId: asset.CurrentOwner })
+            let buyerData = await UserProfile.findOne({ UserId: _buyer })
               .lean()
               .exec();
             await web3Connector.CreateOrder(
               result.BOrderID,
               result.FinalPurchasePrice,
-              2,
-              currentOwner.bAddress, // asset owner user is seller,
-              currentLoggedIN.bAddress, // current logedded in user buyer
-              SKU,
-              1321
+              sellerData.bAddress, // asset owner user is seller,
+              buyerData.bAddress, // current logedded in user buyer
+              SKU
             );
           }
         } else {

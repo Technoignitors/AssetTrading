@@ -25,13 +25,12 @@
       <tr :active="props.selected" @click="props.selected = !props.selected">
         <td style="text-align:center">{{ props.item.AssetDetails.SKU }}</td>
         <td style="text-align:center">{{ props.item.AssetDetails.Name }}</td>
-        <td style="text-align:center">{{ props.item.UserDetails.FirstName }} {{ props.item.UserDetails.LastName }}</td>
         <td style="text-align:center">{{ props.item.AssetDetails.Description }}</td>
         <td style="text-align:center">{{ props.item.FinalPurchasePrice }}</td>
         <td style="text-align:center">{{ props.item.CreatedOn | formatDate}}</td>
         <td>
-            <button class="btn btn-sm btn-success" @click="approveOrder(props.item._id, props.item.AssetID, 'approve')">Approve</button>&nbsp;&nbsp;
-            <button class="btn btn-sm btn-danger" @click="approveOrder(props.item._id, props.item.AssetID, 'reject')">Reject</button>
+            <button class="btn btn-sm btn-success" @click="approveOrder(props.item._id, props.item.AssetID, props.item.UserID, 'approve')">Approve</button>&nbsp;&nbsp;
+            <button class="btn btn-sm btn-danger" @click="approveOrder(props.item._id, props.item.AssetID, props.item.UserID, 'reject')">Reject</button>
         </td>
       </tr>
     </template>
@@ -54,7 +53,6 @@ export default {
         text: "Name",
         value: "_id"
       },
-      { text: "Current Owner", value: "UserDetails.FirstName" },
       { text: "Description", value: "Description" },
       { text: "Price (Ç)", value: "FinalPurchasePrice" },
       { text: "Created", value: "CreatedOn" },
@@ -76,9 +74,9 @@ export default {
         this.pagination.descending = false;
       }
     },
-    async approveOrder(id, AssetID, type) {
+    async approveOrder(id, AssetID, UserID, type) {
       var request = {
-        userID: sessionStorage.getItem("userID"),
+        UserID: UserID,
         OrderId: id,
         Status: type == 'approve'?"Completed":"Rejected",
         AssetID: AssetID

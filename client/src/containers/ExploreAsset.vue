@@ -19,8 +19,9 @@
                 <span class="col-md-6" style="margin-bottom:10px"><b>Specification</b> : {{data.Specification}}</span>
                 <span class="col-md-6" style="margin-bottom:10px"><b>Price</b>: Ç {{data.OwnerShipDetails.FinalPurchasePrice}}</span>
                 <span class="col-md-6" style="margin-bottom:10px"><b>Seller</b>: {{data.UserDetails.FirstName}}  {{data.UserDetails.LastName}}</span>
-                <span class="col-md-6" style="margin-bottom:10px"><b>Owner Address</b>: {{data.UserDetails.bAddress}}</span>
                 <span class="col-md-6" style="margin-bottom:10px"><b>Category</b>: {{data.CategoryName}}</span>
+                <span class="col-md-12" style="margin-bottom:10px"><b>Owner Address</b>: {{data.UserDetails.bAddress}}</span>
+
             </div>
             </v-card-title>
             <v-card-actions>

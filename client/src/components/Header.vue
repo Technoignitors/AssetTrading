@@ -18,7 +18,7 @@
                       
                       <li v-if="role !== 'admin'">
                         <!-- <a>Balance : <span style="font-weight:bold">{{Balance}}</span></a> -->
-                         <v-chip>Balance: {{Balance}}</v-chip>
+                         <v-chip v-if="Balance">Balance: {{Balance}}</v-chip>
                         <!-- <v-badge left>
                       <span slot="badge">{{Balance}}</span>
                       <span>Balance</span>
