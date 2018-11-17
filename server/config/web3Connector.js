@@ -97,8 +97,8 @@ exports.GetUser = function(_userAddress) {
 };
 
 //exports.CreateAsset(101,2500,defaultAccount,1254)
-//CreateUser('0xC7e4F8C8F2182b86e4df4D89Bb8cDe5C32C970CA',1500)
-// CreateOrder(3001,3000,1,'0xb171a93a97fDecD6ed9BeF4d1AAb28f153FE0d7f','0x33eb399f91dB0D8226e9bF9cF725082fA1E7AAAD',102,12541)
+//exports.CreateUser('0x9575f047b78b2b20594CcD1289d37ccA78c8A240',1525)
+//exports.CreateOrder(13,50,'0x8a4dEDdE72f1871c93Cd9a1948dDc43A00f8C689','0x33eb399f91dB0D8226e9bF9cF725082fA1E7AAAD',101)
 
 // GetAsset(101)
 // GetUser(defaultAccount)

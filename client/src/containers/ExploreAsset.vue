@@ -91,7 +91,10 @@ export default {
     async confirmOrder() {
       //this.$router.push({ name: "Orders" });
       var request = {
-        userID: sessionStorage.getItem("userID"),
+        UserID: sessionStorage.getItem("userID"),
+        SellerUserID:this.data.UserDetails._id,
+        BSellerAddress:this.data.UserDetails.bAddress,
+        BBuyAddress:sessionStorage.getItem("bAddress"),
         AssetID: this.$route.params.id,
         Status: "Pending",
         FinalPurchasePrice: this.data.OwnerShipDetails.FinalPurchasePrice,

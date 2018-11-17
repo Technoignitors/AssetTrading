@@ -13,7 +13,7 @@
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                       <li>
-                        <a>{{userData.FirstName}} {{userData.LastName}}</a>
+                        <a>{{firstName}} {{lastName}}</a>
                       </li>
                       
                       <li v-if="role !== 'admin'">
@@ -45,16 +45,18 @@ export default {
     return {
       userData: {},
       role: "user",
-      Balance:1000
+      Balance:1000,
+      firstName:"",
+      lastName:""
     };
   },
   methods: {
     async logout() {
       let response = await PostsService.logout();
-      console.log(response);
       if (response.data && response.data.errors) {
         alert(response.data.errors.error);
       } else {
+        sessionStorage.clear();
         this.$router.push("/login");
       }
     },
@@ -64,21 +66,29 @@ export default {
   },
   mounted: async function() {
     this.role = sessionStorage.getItem("userRole");
-    let response = await PostsService.getUserProfile({
-      id: sessionStorage.getItem("userID")
+    this.firstName = sessionStorage.getItem("firstName");
+    this.lastName = sessionStorage.getItem("lastName");
+    let Balance = await PostsService.getBalance({
+        bAddress: sessionStorage.getItem("bAddress")
     });
+    this.Balance = Balance.data.balance
 
-    if (!response.data.errors) {
-      this.userData = response.data.userProfile;
-      let Balance = await PostsService.getBalance({
-        bAddress: this.userData.bAddress
-      });
-      this.Balance = Balance.data.balance
-      console.log(Balance)
-    } else {
-      console.log(response);
-      //alert(response.data.errors.error);
-    }
+
+    // let response = await PostsService.getUserProfile({
+    //   id: sessionStorage.getItem("userID")
+    // });
+
+    // if (!response.data.errors) {
+    //   this.userData = response.data.userProfile;
+    //   let Balance = await PostsService.getBalance({
+    //     bAddress: this.userData.bAddress
+    //   });
+    //   this.Balance = Balance.data.balance
+    //   console.log(Balance)
+    // } else {
+    //   console.log(response);
+    //   //alert(response.data.errors.error);
+    // }
   }
 };
 var searchVisible = 0;

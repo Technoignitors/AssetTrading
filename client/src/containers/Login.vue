@@ -80,6 +80,13 @@ export default {
         sessionStorage.setItem('token', response.data.user.token);
         sessionStorage.setItem('userID', response.data.user._id);
         sessionStorage.setItem('userRole', response.data.role);
+        let userData = await PostsService.getUserProfile({
+          id: sessionStorage.getItem("userID")
+        });
+        console.log(userData.data.userProfile);
+        sessionStorage.setItem('firstName', userData.data.userProfile.FirstName);
+        sessionStorage.setItem('lastName', userData.data.userProfile.LastName);
+        sessionStorage.setItem('bAddress', userData.data.userProfile.bAddress);
         this.$router.push({ name: "Dashboard" });
       } else {
         this.error = response.data.errors.error;

@@ -6,6 +6,12 @@ const OrderHistorySchema = new Schema({
     type: Schema.ObjectId,
     ref: "Users"
   },
+  SellerUserID :{
+    type: Schema.ObjectId,
+    ref: "Users"
+  },
+  BSellerAddress:String,
+  BBuyAddress:String,
   AssetID: {
     type: Schema.ObjectId,
     ref: "Asset"

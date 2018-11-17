@@ -103,16 +103,22 @@ router.get(
 router.post("/setOrder", auth.required, isValidUser, async (req, res, next) => {
   try {
     let OrderId = req.body.OrderId;
-    let SKU = ""
+    let SKU = "";
+    let _seller  = "";
+    let _buyer  =  "";
     if (OrderId) {
       req.body.UpdatedBy = req.body.userID;
       req.body.UpdatedOn = new Date();
 
+      let orderHistory =  await OrderHistory.findById({_id:req.body.OrderId}).lean().exec()
+      _seller = orderHistory.BSellerAddress;
+      _buyer = orderHistory.BBuyAddress;
+      //_seller = JSON.stringify(_seller);
       await OrderHistory.findOneAndUpdate(
         { _id: OrderId },
         { $set: req.body },
         { new: false }
-      ).exec(async (err, result) => {
+      ).lean().exec(async (err, result) => {
         if (req.body.Status === "Completed") {
           let _req = {
             CurrentOwner: result.UserID,
@@ -135,8 +141,7 @@ router.post("/setOrder", auth.required, isValidUser, async (req, res, next) => {
             .lean()
             .exec();
           if (asset) {
-            let _seller  = asset.CurrentOwner;
-            let _buyer  =  req.body.UserID;
+           
             asset.PreviousOwner = asset.CurrentOwner;
             asset.CurrentOwner = result.CreatedBy;
             (asset.UpdatedOn = new Date()), (asset.UpdatedBy = req.body.userID);
@@ -149,19 +154,11 @@ router.post("/setOrder", auth.required, isValidUser, async (req, res, next) => {
               await console.log("RESULT: " + r);
               //return await res.json({ r });
             });
-            let sellerData = await UserProfile.findOne({
-              UserId: _seller
-            })
-              .lean()
-              .exec();
-            let buyerData = await UserProfile.findOne({ UserId: _buyer })
-              .lean()
-              .exec();
             await web3Connector.CreateOrder(
               result.BOrderID,
               result.FinalPurchasePrice,
-              sellerData.bAddress, // asset owner user is seller,
-              buyerData.bAddress, // current logedded in user buyer
+              _seller, // asset owner user is seller,
+              _buyer, // current logedded in user buyer
               SKU
             );
           }
@@ -184,9 +181,9 @@ router.post("/setOrder", auth.required, isValidUser, async (req, res, next) => {
         return await res.json({ result });
       });
     } else {
-      req.body.UserID = req.body.userID;
-      req.body.CreatedBy = req.body.userID;
+      req.body.CreatedBy = req.body.UserID;
       req.body.BOrderID = Math.floor((Math.random() * 100) + 1);
+
       let orderHistory = new OrderHistory(req.body);
       return await orderHistory.save().then(result => res.json({ result }));
     }
