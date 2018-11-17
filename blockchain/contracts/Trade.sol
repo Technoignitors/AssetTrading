@@ -66,11 +66,11 @@ contract TradeContract is AssetContract, UserContract{
     struct Order{
         uint16 orderId;
         uint256 orderAmount;
-        uint8 orderStatus;
+        //uint8 orderStatus;
         address buyer;
         address seller;
         uint16 sku;
-        uint32 orderDate;
+        //uint32 orderDate;
     }
 
     mapping(uint16 => Order) orders;
@@ -79,8 +79,7 @@ contract TradeContract is AssetContract, UserContract{
 
     }
 
-    event CreateOrder(uint16 _orderId,uint _orderAmount, uint _orderStatus, address buyer, address seller, uint16 _sku, uint32 _orderDate);
-    
+    /*event CreateOrder(uint16 _orderId,uint _orderAmount, uint _orderStatus, address buyer, address seller, uint16 _sku, uint32 _orderDate);
     function GetOrder(uint16 _orderId) constant public returns(uint256 _orderAmount, uint8 _orderStatus, address buyer, address seller, uint16 _sku, uint32 _orderDate){
         Order storage order= orders[_orderId];
         return (order.orderAmount, order.orderStatus, order.buyer, order.seller, order.sku, order.orderDate);
@@ -93,6 +92,24 @@ contract TradeContract is AssetContract, UserContract{
         
         TransferAssetOwner(_buyer,_seller,_sku);
         CreateOrder(_orderId,_orderAmount, _orderStatus, _buyer, _seller, _sku, _orderDate);
+        
+    }*/
+    
+    
+    event CreateOrder(uint16 _orderId,uint _orderAmount, address buyer, address seller, uint16 _sku);
+    
+    function GetOrder(uint16 _orderId) constant public returns(uint256 _orderAmount, address buyer, address seller, uint16 _sku){
+        Order storage order= orders[_orderId];
+        return (order.orderAmount, order.buyer, order.seller, order.sku);
+    }
+
+    function GenerateOrder(uint16 _orderId,uint256 _orderAmount, address _buyer, address _seller, uint16 _sku ) payable public{
+        orders[_orderId] = Order({orderId:_orderId,orderAmount:_orderAmount, buyer:_buyer, seller:_seller, sku:_sku});
+        users[_buyer].userBalance-=_orderAmount;
+        users[_seller].userBalance+=_orderAmount;
+        
+        TransferAssetOwner(_buyer,_seller,_sku);
+        CreateOrder(_orderId,_orderAmount, _buyer, _seller, _sku);
         
     }        
 }
